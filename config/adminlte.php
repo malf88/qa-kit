@@ -587,7 +587,22 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.min.js',
+                    'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.min.js',
+                ],
+            ],
+        ],
+        'FrappeGant' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/frappe-gantt/dist/frappe-gantt.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '/vendor/frappe-gantt/dist/frappe-gantt.css',
                 ],
             ],
         ],

@@ -196,6 +196,7 @@ return [
         App\System\Providers\EventServiceProvider::class,
         App\System\Providers\RouteServiceProvider::class,
         App\Modules\Projetos\Providers\ProjetosServiceProvider::class,
+        App\Modules\GestaoProjetos\Providers\GestaoProjetosServiceProvider::class,
 
 
     ],
