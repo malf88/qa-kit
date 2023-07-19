@@ -3,6 +3,7 @@
 namespace App\System\Impl;
 
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
+use App\System\Exceptions\InvalidServiceProviderClassException;
 use App\System\Exceptions\ModuleNotFoundException;
 use App\System\Exceptions\NotFoundException;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,11 @@ abstract class ServiceProviderAbstract extends ServiceProvider
 
     public function moduleExists(string $providerModule):true
     {
+
+        if (!in_array(self::class,class_parents($providerModule))){
+            throw new InvalidServiceProviderClassException();
+        }
+
         if(!class_exists($providerModule)){
             throw new ModuleNotFoundException();
         }

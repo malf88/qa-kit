@@ -6,7 +6,7 @@
     "license": "MIT",
     "version": "0.0.6-beta",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-http": "*",
         "dompdf/dompdf": "^1",
         "guzzlehttp/guzzle": "^7.2",
