@@ -3,6 +3,8 @@
 namespace App\Modules\GestaoProjetos\Providers;
 
 use App\Modules\GestaoProjetos\Config\MenuConfig;
+use App\Modules\Projetos\Providers\ProjetosServiceProvider;
+use App\System\Exceptions\NotFoundException;
 use App\System\Impl\ServiceProviderAbstract;
 
 class GestaoProjetosServiceProvider extends ServiceProviderAbstract
@@ -21,6 +23,7 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
 
     public function boot(): void
     {
+        $this->moduleExists(ProjetosServiceProvider::class);
         MenuConfig::configureMenuModule();
         //DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
 

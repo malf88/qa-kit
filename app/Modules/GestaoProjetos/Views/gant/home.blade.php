@@ -25,15 +25,22 @@
 @section('js')
     <script>
         var tasks = [
+            @foreach($projetos as $projeto)
             {
-                id: 'Task 1',
-                name: 'Redesign website',
-                start: '2016-12-28',
-                end: '2016-12-31',
-                progress: 20,
-                dependencies: 'Task 2, Task 3'
+                id: '{{$projeto->id}}',
+                name: '{{$projeto->nome}}',
+                start: '{{$projeto->inicio->format('Y-m-d')}}',
+                end: '{{$projeto->termino->format('Y-m-d')}}'
             },
+            @endforeach
+
         ]
-        var gantt = new Gantt("#gantt", tasks);
+        var gantt = new Gantt("#gantt", tasks, {
+            view_mode: 'Month',
+            date_format: 'DD-MM-YYYY',
+            language: 'ptBr',
+            custom_popup_html: null,
+            step: 24
+        });
     </script>
 @stop

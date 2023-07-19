@@ -19,7 +19,6 @@ return new class extends Migration
             $table->bigInteger('projeto_id');
             $table->foreign('projeto_id')->on('projetos.projetos')->references('id');
 
-
             $table->timestamps();
             $table->softDeletes();
         });
