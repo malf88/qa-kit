@@ -18,3 +18,10 @@
  - [ ] Últimas atualizações de projetos.
  - [ ] Ranking de casos de teste por equipes.
  - [ ] Tela de edição de casos de testes antes de importar.
+## Módulo Gestão de Projetos
+ - [ ] Tela para listagem dos projeto.
+ - [ ] Tela para listagem das tarefas do projeto.
+ - [ ] Cadastro de tarefas.
+ - [ ] Importação de tarefas.
+ - [ ] Dashboard com andamento das tarefas.
+ - [ ] Kanban para gestão das tarefas.
