@@ -53,7 +53,7 @@ return new class extends Migration
         $roleAdministrador->syncPermissions(Permission::all());
 
         $roleAuditor = Role::findByName('AUDITOR');
-        $roleAuditor->syncPermissions([
+        $roleAuditor->givePermissionTo([
             'LISTAR_EXECUCAO_PLANO_TESTE',
             'REMOVER_EXECUCAO_PLANO_TESTE',
             'INSERIR_EXECUCAO_PLANO_TESTE',
@@ -76,7 +76,7 @@ return new class extends Migration
         ]);
 
         $roleGestor = Role::findByName('GESTOR');
-        $roleGestor->syncPermissions([
+        $roleGestor->givePermissionTo([
             'LISTAR_EXECUCAO_PLANO_TESTE',
             'REMOVER_EXECUCAO_PLANO_TESTE',
             'INSERIR_EXECUCAO_PLANO_TESTE',
@@ -97,7 +97,7 @@ return new class extends Migration
         ]);
 
         $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
-        $roleDesenvolvedor->syncPermissions([
+        $roleDesenvolvedor->givePermissionTo([
             'LISTAR_EXECUCAO_PLANO_TESTE',
             'INSERIR_EXECUCAO_PLANO_TESTE',
             'LISTAR_CASO_TESTE',

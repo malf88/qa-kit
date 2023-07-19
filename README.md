@@ -25,3 +25,7 @@
  - [ ] Importação de tarefas.
  - [ ] Dashboard com andamento das tarefas.
  - [ ] Kanban para gestão das tarefas.
+ - [ ] Vincular caso de teste à tarefa.
+ - [ ] Cadastrar comentário à tarefa.
+ - [ ] Cadastrar movimentação da tarefa.
+ - [ ] Executar caso de teste da tarefa.
