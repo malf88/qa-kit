@@ -99,4 +99,9 @@ class ProjetoBusiness extends BusinessAbstract implements ProjetoBusinessContrac
 
         return $projeto;
     }
+
+    public function buscarTodosPorEquipe(int $idEquipe): DataCollection
+    {
+        return $this->projetoRepository->buscarTodosPorEquipe($idEquipe);
+    }
 }

@@ -59,4 +59,15 @@ class ProjetoRepository extends BaseRepository  implements ProjetoRepositoryCont
         $projeto->save();
         return ProjetoDTO::from($projeto);
     }
+
+    public function buscarTodosPorEquipe(int $idEquipe): DataCollection
+    {
+        return ProjetoDTO::collection(
+            Projeto::select('projetos.*')
+                ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
+                ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
+                ->where('equipe_id',$idEquipe)
+                ->get()
+        );
+    }
 }

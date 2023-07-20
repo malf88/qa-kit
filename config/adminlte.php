@@ -604,6 +604,16 @@ return [
                     'asset' => true,
                     'location' => '/vendor/frappe-gantt/dist/frappe-gantt.css',
                 ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js',
+                ],
             ],
         ],
     ],
