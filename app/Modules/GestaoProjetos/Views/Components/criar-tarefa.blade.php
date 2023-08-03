@@ -11,9 +11,9 @@
     <div class="row">
         <div class="col-md-12">
 
-            <form method="post" action="#" enctype="multipart/form-data">
+            <form method="post" action="{{ route('gestao-projetos.tarefas.salvar') }}">
                 @csrf
-                <input type="hidden" id="idProjeto" name="idProjeto" value="${task.id}">
+                <input type="hidden" id="idProjeto" name="projeto_id" value="${task.id}">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">

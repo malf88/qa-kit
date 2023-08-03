@@ -14,14 +14,15 @@ use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
 
 use Illuminate\Support\Carbon;
-use Spatie\LaravelData\Contracts\DataCollectable;
 
 class TarefaDTO extends DTO
 {
     public function __construct(
         public ?int $id,
         public ?string $titulo,
+        public ?string $descricao,
         public ?string $status,
+        public ?int $projeto_id,
         #[WithCast(CastCarbonDate::class)]
         public ?Carbon $data_arquivamento,
         #[WithCast(CastCarbonDate::class)]
