@@ -24,6 +24,7 @@ class ProjetoRepository extends BaseRepository implements ProjetoRepositoryContr
                 ->join('projetos.aplicacoes','aplicacoes.id','=','projetos.aplicacao_id')
                 ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
                 ->where('equipe_id',$idEquipe)
+                ->with(['aplicacao'])
                 ->get()
         );
     }

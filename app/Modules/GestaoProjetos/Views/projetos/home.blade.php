@@ -32,6 +32,7 @@
                 start: '{{$projeto->inicio->format('Y-m-d')}}',
                 end: '{{$projeto->termino->format('Y-m-d')}}',
                 progress: {{ $projeto->andamento }},
+                aplicacao: '{{ $projeto->aplicacao->nome }}',
                 teste: 'teste',
                 custom_class: 'bg-danger'
             },
@@ -57,7 +58,7 @@
                 const start_date = moment(task.start).format('DD/MM/YYYY');
                 return `
 
-                    <div style="width:20em; height: max-content;">
+                    <div style="width:25em; height: max-content;">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
@@ -65,6 +66,11 @@
                                           <div class="row">
                                             <div class="col-md-12">
                                               <h5>${task.name}</h5>
+                                            </div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-md-12">
+                                              <p>Aplicação: ${task.aplicacao}</p>
                                             </div>
                                           </div>
                                           <div class="row">
@@ -86,15 +92,12 @@
                                             </div>
                                             <div class="col-md-5">
                                             @can(\App\Modules\GestaoProjetos\Enums\PermissionEnum::VER_KANBAN->value)
-                                                <x-adminlte-button
-                                                    class="btn-sm mb-2"
-                                                    theme="success"
-                                                    label="Board"
+                                                <a
+                                                    class="btn btn-sm btn-success"
                                                     title="Ir para o board"
-                                                    icon="fas fa-project-diagram"
-                                                    data-toggle="modal"
-                                                    data-target="#modalMin_tarefa_inserir_"
-                                                />
+                                                    href="{{ str_replace('idProjeto','${task.id}',route('gestao-projetos.projetos.kanban.index','idProjeto')) }}"
+
+                                                ><i class="fas fa-tasks"></i> Board</a>
                                             @endcan
 
                                            </div>

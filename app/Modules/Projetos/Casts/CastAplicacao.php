@@ -10,7 +10,6 @@ class CastAplicacao implements Cast
 {
     public function cast(DataProperty $property, mixed $value, array $context): mixed
     {
-        dd($value);
         return  AplicacaoDTO::from($value);
     }
 }

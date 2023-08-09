@@ -23,6 +23,7 @@ class ProjetoController extends Controller
         Auth::user()->can(PermissionEnum::LISTAR_PROJETO->value);
 
         $projetos = $this->projetoBusiness->buscarTodosPorEquipe(EquipeUtils::equipeUsuarioLogado());
+
         return view(
             'gestao-projetos::projetos.home',
             compact('projetos')
