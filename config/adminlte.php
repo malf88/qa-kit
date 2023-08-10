@@ -459,6 +459,21 @@ return [
                 ],
             ],
         ],
+        'JKanban' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/jkanban/jkanban.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/jkanban/jkanban.min.css',
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => false,
             'files' => [

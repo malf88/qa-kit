@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoProjetos\Business;
 
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\Projetos\Contracts\Business\AplicacaoBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\Projetos\Business\ProjetoBusiness as BaseBusiness;
@@ -20,5 +21,10 @@ class ProjetoBusiness extends BaseBusiness implements ProjetoBusinessContract
     public function buscarTodosPorEquipe(int $idEquipe): DataCollection
     {
         return $this->projetoRepository->buscarTodosPorEquipe($idEquipe);
+    }
+
+    public function buscarPorIdProjeto(int $idProjeto, int $idEquipe): ?ProjetoDTO
+    {
+        return $this->projetoRepository->buscarPorIdProjeto($idProjeto, $idEquipe);
     }
 }
