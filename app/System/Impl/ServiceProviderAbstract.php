@@ -24,7 +24,7 @@ abstract class ServiceProviderAbstract extends ServiceProvider
 
     }
 
-    public function moduleExists(string $providerModule):true
+    public function moduleExists(string $providerModule):bool
     {
 
         if (!in_array(self::class,class_parents($providerModule))){

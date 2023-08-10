@@ -19,7 +19,7 @@
     @endif
 
     {{-- Main Content --}}
-    <div class="content">
+    <div class="content" id="app">
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
 
             @if(session()->has(\App\System\Http\Controllers\Controller::MESSAGE_KEY_SUCCESS))
