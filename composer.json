@@ -9,7 +9,7 @@
         "php": "^8.2",
         "ext-http": "*",
         "dompdf/dompdf": "^1",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.7",
         "jeroennoten/laravel-adminlte": "^3.8",
         "laravel/framework": "^10.0",
         "laravel/horizon": "^5.18",
