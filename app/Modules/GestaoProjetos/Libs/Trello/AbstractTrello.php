@@ -27,8 +27,6 @@ abstract class AbstractTrello
         ]);
 
         return  json_decode($response->getBody()->getContents());
-
-
     }
 
     private function getQuery():array
