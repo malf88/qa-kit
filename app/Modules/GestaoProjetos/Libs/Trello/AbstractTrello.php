@@ -4,6 +4,7 @@ namespace App\Modules\GestaoProjetos\Libs\Trello;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Support\Arr;
 use function PHPUnit\Framework\isJson;
 
 abstract class AbstractTrello
@@ -20,23 +21,28 @@ abstract class AbstractTrello
         ]);
     }
 
-    protected function request(string $method, array $parameter = []):mixed
+    protected function request(string $method, array $parameter = [], array $parametroPath = []):mixed
     {
-        $response = $this->client->request($method, $this->path, [
-            'query' => $this->getQuery()
+        $response = $this->client->request($method, $this->trataURL($parametroPath), [
+            'query' => $this->getQuery($parameter)
         ]);
 
-        return  json_decode($response->getBody()->getContents());
+        return  json_decode($response->getBody()->getContents(), true);
     }
 
-    private function getQuery():array
+    private function getQuery(array $parameters):array
     {
         return [
             'key' => $this->key,
-            'token' => $this->token
+            'token' => $this->token,
+            ...$parameters
         ];
     }
+    private function trataURL(array $parametroPath):string
+    {
+        return str_replace(array_keys($parametroPath),array_values($parametroPath), $this->path);
+    }
 
-    abstract public function send(mixed $parameters);
+    abstract public function get(mixed $parameters);
 
 }
