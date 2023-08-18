@@ -8,6 +8,7 @@ use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\GestaoProjetos\Repositorys\TarefaRepository;
 use App\System\Impl\BusinessAbstract;
+use Spatie\LaravelData\DataCollection;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class TarefaBusiness extends BusinessAbstract implements TarefaBusinessContract
@@ -23,5 +24,11 @@ class TarefaBusiness extends BusinessAbstract implements TarefaBusinessContract
     {
         $this->can(PermissionEnum::INSERIR_TAREFA->value);
         return $this->tarefaRepository->salvar($tarefaDTO);
+    }
+
+    public function listarTarefasComSprint(int $idProjeto, int $idEquipe): DataCollection
+    {
+        $this->can(PermissionEnum::LISTAR_TAREFA->value);
+        return $this->tarefaRepository->listarTarefasComSprint($idProjeto, $idEquipe);
     }
 }

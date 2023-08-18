@@ -95,7 +95,7 @@
                                                 <a
                                                     class="btn btn-sm btn-success"
                                                     title="Ir para o board"
-                                                    href="{{ str_replace('idProjeto','${task.id}',route('gestao-projetos.projetos.kanban.index','idProjeto')) }}"
+                                                    href="{{ str_replace('idProjeto','${task.id}',route('gestao-projetos.projetos.tarefas.index','idProjeto')) }}"
 
                                                 ><i class="fas fa-tasks"></i> Board</a>
                                             @endcan
