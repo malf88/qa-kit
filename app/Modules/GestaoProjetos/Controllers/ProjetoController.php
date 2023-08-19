@@ -4,6 +4,7 @@ namespace App\Modules\GestaoProjetos\Controllers;
 
 
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\Projetos\Enums\PermissionEnum as ProjetoPermisssionEnum;
@@ -16,7 +17,8 @@ class ProjetoController extends Controller
 {
     public function __construct(
         private readonly ProjetoBusinessContract $projetoBusiness,
-        private readonly TarefaBusinessContract $tarefaBusiness
+        private readonly TarefaBusinessContract $tarefaBusiness,
+        private readonly SprintBusinessContract $sprintBusiness
     )
     {
     }
@@ -39,6 +41,7 @@ class ProjetoController extends Controller
         Auth::user()->can(PermissionEnum::LISTAR_TAREFA->value);
         $heads = [
             ['label' => 'Id', 'width' => 10],
+            'Sprint',
             'Descrição',
             'Início',
             'Término',
@@ -47,13 +50,14 @@ class ProjetoController extends Controller
 
         $config = [
             ...config('adminlte.datatable_config'),
-            'columns' => [null, null, null, null],
+            'ordering' => false,
         ];
         $tarefas = $this->tarefaBusiness->listarTarefasComSprint($idProjeto, EquipeUtils::equipeUsuarioLogado());
-
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
+        $sprints = $this->sprintBusiness->listarSprints($idProjeto, EquipeUtils::equipeUsuarioLogado());
         return view(
             'gestao-projetos::projetos.tarefas',
-            compact('tarefas', 'heads', 'config')
+            compact('tarefas', 'projeto', 'sprints', 'heads', 'config')
         );
 
     }

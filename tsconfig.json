@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "sourceMap": true,
+        "allowJs": true,
+        "strict": false,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"]
+        },
+        "types": ["vite/client"]
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "extends": "@vue/tsconfig/tsconfig.json",
+    "include": [
+        "resources/**/*.ts",
+        "resources/**/*.d.ts",
+        "resources/**/*.vue"
+    ]
+
+}

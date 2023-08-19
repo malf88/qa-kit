@@ -6,12 +6,12 @@ services:
     volumes:
       - ../../:/app
   node:
-    image: node:14-alpine
+    image: node:16-alpine
     container_name: node
     working_dir: /usr/src/app
     volumes:
       - ../../:/usr/src/app
-
+    user: 1000:1000
   robot:
     build:
       context: ./

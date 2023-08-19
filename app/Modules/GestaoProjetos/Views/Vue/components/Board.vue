@@ -1,7 +1,6 @@
 <script setup>
 import {onMounted} from "vue";
 import { ref } from "vue"
-import {GGanttChart, GGanttRow} from "@infectoone/vue-ganttastic";
 
 const row1BarList = ref([
     {

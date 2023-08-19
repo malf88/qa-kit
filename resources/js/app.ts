@@ -5,7 +5,7 @@
  */
 
 import './bootstrap';
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -15,8 +15,10 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 //
+//  import ExampleComponent from './../../app/Modules/GestaoProjetos/Views/Vue/components/SprintSelect.vue';
+//  app.component('SprintSelect', ExampleComponent);
 // import ExampleComponent from './components/ExampleComponent.vue';
-// app.component('example-component', ExampleComponent);
+// app.component('SprintSelect', ExampleComponent);
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,11 +29,12 @@ const app = createApp({});
  */
 
 Object.entries(import.meta.glob('./../../app/Modules/**/Views/Vue/components/*.vue', { eager: true }))
-    .forEach(([path, definition]) => {
+    .forEach(([path, definition]:any) => {
         app.component(path.split('/')
             .pop()
             .replace(/\.\w+$/, ''), definition.default);
 });
+
 
 /**
  * Finally, we will attach the application instance to a HTML element with
