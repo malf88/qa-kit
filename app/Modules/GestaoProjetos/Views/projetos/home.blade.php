@@ -45,12 +45,7 @@
             language: 'ptBr',
             bar_height: 50,
             step: 24,
-            on_click: function (task) {
-                console.log(task);
-            },
-            on_date_change: function(task, start, end) {
-                console.log(task, start, end);
-            },
+
             custom_popup_html: function(task) {
                 // the task object will contain the updated
                 // dates and progress value
@@ -91,7 +86,7 @@
                                             @endcan
                                             </div>
                                             <div class="col-md-5">
-                                            @can(\App\Modules\GestaoProjetos\Enums\PermissionEnum::VER_KANBAN->value)
+                                            @can(\App\Modules\GestaoProjetos\Enums\PermissionEnum::LISTAR_TAREFA->value)
                                                 <a
                                                     class="btn btn-sm btn-success"
                                                     title="Ir para o board"

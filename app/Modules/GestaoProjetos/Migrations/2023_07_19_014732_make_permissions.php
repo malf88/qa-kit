@@ -23,6 +23,7 @@ return new class extends Migration
 
         Permission::create(['name' => 'VER_KANBAN']);
         Permission::create(['name' => 'VER_GANTT']);
+        Permission::create(['name' => 'PODE_ALTERAR_TAREFA_CONCLUIDA']);
 
         $roleAdministrador = Role::findByName('ADMINISTRADOR');
         $roleAdministrador->syncPermissions(Permission::all());

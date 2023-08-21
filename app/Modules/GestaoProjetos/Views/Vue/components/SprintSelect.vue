@@ -10,6 +10,7 @@ const props = defineProps({
 });
 const sprints = ref<Array<Sprint>>([])
 const sprint_id = ref(props.selected);
+const myForm = ref<HTMLFormElement>()
 onMounted(() => {
     sprints.value = JSON.parse(props.sprints);
 })
@@ -17,10 +18,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <select :id="props.id" v-model="sprint_id" :name="props.id" >
-        <option v-for="sprint in sprints"
-                :value="sprint.id">{{ sprint.nome }}</option>
-    </select>
+    <form method="post" action="">
+        <select :id="props.id" v-model="sprint_id" :name="props.id" @click="submitSelect">
+            <option v-for="sprint in sprints"
+                    :value="sprint.id">{{ sprint.nome }}</option>
+        </select>
+    </form>
 </template>
 
 <style scoped>

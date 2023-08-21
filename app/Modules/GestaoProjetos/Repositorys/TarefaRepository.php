@@ -57,4 +57,24 @@ class TarefaRepository implements TarefaRepositoryContract
 
         return TarefaSprintDTO::collection($tarefas);
     }
+
+    public function updateSprint(int $idTarefa, ?int $idSprint): bool
+    {
+        $tarefa = Tarefa::find($idTarefa);
+        $tarefa->sprint_id = $idSprint;
+        return $tarefa->update();
+
+    }
+
+    public function buscarTarefaPorId(int $idTarefa, int $idEquipe): ?TarefaDTO
+    {
+        $tarefa = Tarefa::join('projetos.projetos', 'projetos.id', '=', 'tarefas.projeto_id')
+            ->join('projetos.aplicacoes', 'projetos.aplicacao_id', '=', 'aplicacoes.id')
+            ->join('projetos.aplicacoes_equipes', 'aplicacoes.id', '=', 'aplicacoes_equipes.aplicacao_id')
+            ->where('equipe_id', $idEquipe)
+            ->where('tarefas.id', $idTarefa)
+            ->first();
+
+        return ($tarefa != null) ? TarefaDTO::from($tarefa) : $tarefa;
+    }
 }

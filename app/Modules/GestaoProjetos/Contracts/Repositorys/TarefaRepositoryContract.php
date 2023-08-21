@@ -9,5 +9,7 @@ interface TarefaRepositoryContract
 {
     public function salvar(TarefaDTO $tarefaDTO): TarefaDTO;
     public function listarTarefasComSprint(int $idProjeto, int $idEquipe): DataCollection;
+    public function updateSprint(int $idTarefa, ?int $idSprint):bool;
+    public function buscarTarefaPorId(int $idTarefa, int $idEquipe):?TarefaDTO;
 
 }

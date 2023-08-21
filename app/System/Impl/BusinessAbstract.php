@@ -13,4 +13,9 @@ class BusinessAbstract
             throw new UnauthorizedException(403);
         }
     }
+
+    public function canDo(string $permission): bool
+    {
+        return Auth::user()->can($permission);
+    }
 }

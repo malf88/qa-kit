@@ -42,4 +42,4 @@ Object.entries(import.meta.glob('./../../app/Modules/**/Views/Vue/components/*.v
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 
-app.mount('#app');
+app.mount('#vue');

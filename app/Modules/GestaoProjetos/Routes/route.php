@@ -7,7 +7,9 @@ use App\Modules\GestaoProjetos\Controllers\TarefaController;
 Route::group(['prefix' => ''],function () {
     Route::get('/', [ProjetoController::class, 'index'])->name('gestao-projetos.projetos.index');
     Route::group(['prefix' => '{idProjeto}/tarefas'],function (){
-        Route::get('/',[ProjetoController::class,'tarefas'])->name('gestao-projetos.projetos.tarefas.index');
+        Route::get('/',[TarefaController::class,'tarefas'])->name('gestao-projetos.projetos.tarefas.index');
+        Route::post('/',[TarefaController::class,'updateTarefa'])->name('gestao-projetos.projetos.tarefas.update');
+        Route::post('/upload',[TarefaController::class,'uploadTarefa'])->name('gestao-projetos.projetos.tarefas.upload');
 
     });
     Route::group(['prefix' => '/tarefas'],function (){
