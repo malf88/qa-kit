@@ -48,21 +48,9 @@ class TarefaController extends Controller
     }
     public function tarefas(Request $request, int $idProjeto)
     {
-//        $client = new \Google_Client();
-//        $client->setApplicationName('QAKit');
-//        $client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);
-//        $client->setAccessType('offline');
-//        $client->setAuthConfig(resource_path('json/credenciais.json'));
-//        $client->setPrompt('select_account consent');
-//
-//        $service = new Google_Service_Sheets($client);
-//        $planilhaId = '1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U';
-//        $range = "estimativa!A1:F";
-//        $response = $service->spreadsheets_values->get($planilhaId, $range);
-//        $values = $response->getValues();
 
-        $values = Sheets::spreadsheet('1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U')->sheet('estimativa')->all();
-        dd($values);
+//        $values = Sheets::spreadsheet('1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U')->sheet('estimativa')->all();
+//        dd($values);
         Auth::user()->can(PermissionEnum::LISTAR_TAREFA->value);
         $heads = [
             ['label' => 'Id', 'width' => 10],

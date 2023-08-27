@@ -13,5 +13,5 @@ use Spatie\LaravelData\DataCollection;
 class UploadTarefaRepository implements UploadTarefaRepositoryContract
 {
 
-    
+
 }

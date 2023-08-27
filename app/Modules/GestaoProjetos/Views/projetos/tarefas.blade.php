@@ -29,11 +29,11 @@
                             <p>Término: {{ $projeto->termino->format('d/m/Y') }}</p>
                         </div>
                         <div class="col-md-3 align-items-center my-auto">
-                            <x-upload-modal
+                            <x-generic-modal
                                 idModal="uploadPlanilhaTarefas"
-                                message="Selecione o arquivo para importar"
-                                routeAction="{{ route('gestao-projetos.projetos.tarefas.upload', $projeto->id) }}"
-                                labelBtnEnviar="Importar tarefas"
+                                labelBtnAbrir="Importar tarefas"
+                                icon="fa fas-disk"
+                                title="Importar tarefas"
                             />
                         </div>
 

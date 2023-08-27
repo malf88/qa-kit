@@ -6,6 +6,7 @@ use App\System\Business\EquipeBusiness;
 use App\System\Business\UserBusiness;
 use App\System\Component\ComboEquipes;
 use App\System\Component\DeleteModal;
+use App\System\Component\GenericModal;
 use App\System\Component\UploadModal;
 use App\System\Config\MenuConfig;
 use App\System\Contracts\Business\EquipeBusinessContract;
@@ -41,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('delete-modal', DeleteModal::class);
         Blade::component('combo-equipes', ComboEquipes::class);
         Blade::component('upload-modal', UploadModal::class);
+        Blade::component('generic-modal', GenericModal::class);
         MenuConfig::configureMenuModule();
         $this->addDirectoryMigration();
 
