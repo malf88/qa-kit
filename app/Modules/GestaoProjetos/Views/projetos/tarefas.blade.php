@@ -22,11 +22,19 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <h2 class="col-md-6 text-lg">Projeto: {{ $projeto->nome }}</h2>
+                    <div class="row bg-gray-light p-2 rounded-lg font-monospace">
+                        <div class="col-md-6 text-lg">Projeto: {{ $projeto->nome }}</div>
                         <div class="col-md-3">
                             <p>Início: {{ $projeto->inicio->format('d/m/Y') }}</p>
                             <p>Término: {{ $projeto->termino->format('d/m/Y') }}</p>
+                        </div>
+                        <div class="col-md-3 align-items-center my-auto">
+                            <x-upload-modal
+                                idModal="uploadPlanilhaTarefas"
+                                message="Selecione o arquivo para importar"
+                                routeAction="{{ route('gestao-projetos.projetos.tarefas.upload', $projeto->id) }}"
+                                labelBtnEnviar="Importar tarefas"
+                            />
                         </div>
 
                     </div>
@@ -87,14 +95,6 @@
                                     icon="fas fa-save"
                                     type="submit"
                                     class="w-100"
-                                />
-                            </div>
-                            <div class="col-md-5">
-                                <x-upload-modal
-                                    idModal="uploadPlanilhaTarefas"
-                                    message="Selecione o arquivo para importar"
-                                    routeAction="{{ route('aplicacoes.casos-teste.upload-caso-teste') }}"
-                                    labelBtnEnviar="Importar tarefas"
                                 />
                             </div>
                         </div>

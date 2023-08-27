@@ -13,9 +13,12 @@ use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\TransactionDatabase;
 use App\System\Utils\EquipeUtils;
+use Google\Client;
+use Google_Service_Sheets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Revolution\Google\Sheets\Facades\Sheets;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class TarefaController extends Controller
@@ -43,8 +46,23 @@ class TarefaController extends Controller
         }
 
     }
-    public function tarefas(int $idProjeto)
+    public function tarefas(Request $request, int $idProjeto)
     {
+//        $client = new \Google_Client();
+//        $client->setApplicationName('QAKit');
+//        $client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);
+//        $client->setAccessType('offline');
+//        $client->setAuthConfig(resource_path('json/credenciais.json'));
+//        $client->setPrompt('select_account consent');
+//
+//        $service = new Google_Service_Sheets($client);
+//        $planilhaId = '1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U';
+//        $range = "estimativa!A1:F";
+//        $response = $service->spreadsheets_values->get($planilhaId, $range);
+//        $values = $response->getValues();
+
+        $values = Sheets::spreadsheet('1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U')->sheet('estimativa')->all();
+        dd($values);
         Auth::user()->can(PermissionEnum::LISTAR_TAREFA->value);
         $heads = [
             ['label' => 'Id', 'width' => 10],
@@ -88,10 +106,6 @@ class TarefaController extends Controller
         }
     }
 
-    public function uploadTarefa(Request $request)
-    {
-        dd($request);
-    }
     public function podeEditarTarefa(int $idTarefa):bool
     {
         return $this->tarefaBusiness->podeAlterarTarefa($idTarefa, EquipeUtils::equipeUsuarioLogado());
