@@ -24,6 +24,7 @@ class TarefaDTO extends DTO
         public ?string $status,
         public ?int $projeto_id,
         public ?int $responsavel_id,
+        public ?int $sprint_id,
         #[WithCast(CastCarbonDate::class)]
         public ?Carbon $data_arquivamento,
         #[WithCast(CastCarbonDate::class)]

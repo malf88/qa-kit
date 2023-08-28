@@ -34,7 +34,37 @@
                                 labelBtnAbrir="Importar tarefas"
                                 icon="fa fas-disk"
                                 title="Importar tarefas"
-                            />
+                            >
+                                <form method="post" action="{{ route('gestao-projetos.projetos.tarefas.upload', $projeto->id) }}">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <x-adminlte-input
+                                                        label="Url da planilha do google"
+                                                        name="url"
+                                                        required
+                                                        placeholder="https://docs.google.com/spreadsheets/d/1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U/edit#gid=1224808637"
+                                                        fgroup-class="col-md-12"
+                                                        value="{{ old('url','') }}"
+                                                    >
+                                                        <x-slot name="appendSlot">
+                                                            <x-adminlte-button
+                                                                label="Importar"
+                                                                theme="success"
+                                                                icon="fas fa-file-upload"
+                                                                type="submit"
+                                                            />
+                                                        </x-slot>
+                                                    </x-adminlte-input>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </x-generic-modal>
                         </div>
 
                     </div>

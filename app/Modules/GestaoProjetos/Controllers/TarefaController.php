@@ -49,7 +49,6 @@ class TarefaController extends Controller
     public function tarefas(Request $request, int $idProjeto)
     {
 
-//        $values = Sheets::spreadsheet('1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U')->sheet('estimativa')->all();
 //        dd($values);
         Auth::user()->can(PermissionEnum::LISTAR_TAREFA->value);
         $heads = [

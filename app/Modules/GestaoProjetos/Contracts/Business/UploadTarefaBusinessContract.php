@@ -8,5 +8,5 @@ use Spatie\LaravelData\DataCollection;
 
 interface UploadTarefaBusinessContract
 {
-    public function processarPlanilha(?UploadedFile $uploadedFile): DataCollection;
+    public function processarPlanilha(string $idPlanilha, int $idProjeto): DataCollection;
 }

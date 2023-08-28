@@ -23,4 +23,11 @@ class SprintRepository implements SprintRepositoryContract
             ->with(['projeto'])
             ->get());
     }
+
+    public function salvar(SprintDTO $sprintDTO): SprintDTO
+    {
+        $sprint = new Sprint($sprintDTO->toArray());
+        $sprint->save();
+        return SprintDTO::from($sprint);
+    }
 }

@@ -17,19 +17,36 @@ use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class UploadTarefaController extends Controller
 {
     use TransactionDatabase;
+    const ID_PLANILHA_GOOGLE = 5;
     public function __construct(
         private readonly UploadTarefaBusinessContract $uploadTarefaBusiness
     )
     {
     }
-    public function uploadTarefa(Request $request)
+    public function uploadTarefa(Request $request,int $idProjeto)
     {
+        try{
+            $idPlanilha = $this->extrairIdPlanilha($request->post('url'));
+            $this->uploadTarefaBusiness->processarPlanilha($idPlanilha, $idProjeto);
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Planilha processada com sucesso']]);
+        }catch (\Exception $exception){
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Houve um erro ao processar a planilha']]);
+        }
 
-        $this->uploadTarefaBusiness->processarPlanilha($request->file('arquivo'));
     }
+
+    private function extrairIdPlanilha(string $url):string
+    {
+        $urlExploded = explode('/', $url);
+        return $urlExploded[self::ID_PLANILHA_GOOGLE];
+    }
+
 }
