@@ -1,5 +1,5 @@
 @php
-    use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
+    use App\Modules\GestaoProjetos\Enums\PermissionEnum;
     use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
 @endphp
 @extends('adminlte::page')
@@ -29,46 +29,49 @@
                             <p>Término: {{ $projeto->termino->format('d/m/Y') }}</p>
                         </div>
                         <div class="col-md-3 align-items-center my-auto">
-                            <x-generic-modal
-                                idModal="uploadPlanilhaTarefas"
-                                labelBtnAbrir="Importar tarefas"
-                                icon="fa fas-disk"
-                                title="Importar tarefas"
-                            >
-                                <form method="post" action="{{ route('gestao-projetos.projetos.tarefas.upload', $projeto->id) }}">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="input-group">
-                                                    <x-adminlte-input
-                                                        label="Url da planilha do google"
-                                                        name="url"
-                                                        required
-                                                        placeholder="https://docs.google.com/spreadsheets/d/1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U/edit#gid=1224808637"
-                                                        fgroup-class="col-md-12"
-                                                        value="{{ old('url','') }}"
-                                                    >
-                                                        <x-slot name="appendSlot">
-                                                            <x-adminlte-button
-                                                                label="Importar"
-                                                                theme="success"
-                                                                icon="fas fa-file-upload"
-                                                                type="submit"
-                                                            />
-                                                        </x-slot>
-                                                    </x-adminlte-input>
+                            @can(PermissionEnum::INSERIR_TAREFA->value)
+                                <x-generic-modal
+                                    idModal="uploadPlanilhaTarefas"
+                                    labelBtnAbrir="Importar tarefas"
+                                    icon="fa fas-disk"
+                                    title="Importar tarefas"
+                                >
+                                    <form method="post"
+                                          action="{{ route('gestao-projetos.projetos.tarefas.upload', $projeto->id) }}">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="input-group">
+                                                        <x-adminlte-input
+                                                            label="Url da planilha do google"
+                                                            name="url"
+                                                            required
+                                                            placeholder="https://docs.google.com/spreadsheets/d/1dI-cQkM9BTG-HWkMsGptSzWUa9Kh8ZG6slT7b0Adu3U/edit#gid=1224808637"
+                                                            fgroup-class="col-md-12"
+                                                            value="{{ old('url','') }}"
+                                                        >
+                                                            <x-slot name="appendSlot">
+                                                                <x-adminlte-button
+                                                                    label="Importar"
+                                                                    theme="success"
+                                                                    icon="fas fa-file-upload"
+                                                                    type="submit"
+                                                                />
+                                                            </x-slot>
+                                                        </x-adminlte-input>
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </x-generic-modal>
+                                    </form>
+                                </x-generic-modal>
+                            @endcan
                         </div>
 
                     </div>
-                    <hr />
+                    <hr/>
                     <form method="post" action="">
                         @csrf
                         <x-adminlte-datatable
@@ -93,7 +96,8 @@
                                                 <select name="sprint[{{ $tarefa->tarefa_id }}]" class="w-100">
                                                     <option value=""></option>
                                                     @foreach($sprints as $sprint)
-                                                        <option value="{{ $sprint->id }}" {{ ($sprint->id == $tarefa->sprint_id)? 'selected' : '' }}>{{ $sprint->nome }}</option>
+                                                        <option
+                                                            value="{{ $sprint->id }}" {{ ($sprint->id == $tarefa->sprint_id)? 'selected' : '' }}>{{ $sprint->nome }}</option>
                                                     @endforeach
                                                 </select>
                                             @endif

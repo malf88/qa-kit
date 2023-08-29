@@ -27,6 +27,7 @@ class Tarefa extends Model
         'projeto_id',
         'responsavel_id',
         'sprint_id',
+        'responsavel'
 
     ];
 

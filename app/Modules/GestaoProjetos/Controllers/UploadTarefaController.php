@@ -11,6 +11,7 @@ use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
+use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\TransactionDatabase;
 use App\System\Utils\EquipeUtils;
@@ -33,12 +34,21 @@ class UploadTarefaController extends Controller
     {
         try{
             $idPlanilha = $this->extrairIdPlanilha($request->post('url'));
-            $this->uploadTarefaBusiness->processarPlanilha($idPlanilha, $idProjeto);
+            $this->uploadTarefaBusiness->processarPlanilha($idPlanilha, $idProjeto, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Planilha processada com sucesso']]);
-        }catch (\Exception $exception){
+        }catch (NotFoundException $exception){
             return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
-                ->with([Controller::MESSAGE_KEY_ERROR => ['Houve um erro ao processar a planilha']]);
+                ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado ao importar planilha']]);
+        }catch (UnprocessableEntityException $exception){
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_ERROR => $exception->getMessage()])
+                ->withErrors($exception->getValidator())
+                ->withInput();
+        }catch (\Exception $exception){
+            throw $exception;
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_ERROR => [$exception->getMessage()]]);
         }
 
     }

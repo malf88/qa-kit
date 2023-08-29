@@ -7,6 +7,7 @@ use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\SprintDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
+use App\System\DTOs\UserDTO;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Revolution\Google\Sheets\Facades\Sheets;
@@ -21,6 +22,7 @@ class PlanilhaEstimativa
     const COL_TITULO = 4;
     const COL_INICIO = 8;
     const COL_TERMINO = 9;
+    const COL_RESPONSAVEL = 11;
     const PLANILHA_ESTIMATIVA = 'estimativa';
     public function __construct(
         private Collection $sprints = new Collection()
@@ -80,7 +82,8 @@ class PlanilhaEstimativa
                 'projeto_id' => $idProjeto,
                 'status' => TarefaStatusEnum::ABERTA->value,
                 'inicio_estimado' => Carbon::createFromFormat('d/m/Y', $row[self::COL_INICIO]),
-                'termino_estimado' => Carbon::createFromFormat('d/m/Y', $row[self::COL_TERMINO])
+                'termino_estimado' => Carbon::createFromFormat('d/m/Y', $row[self::COL_TERMINO]),
+                'responsavel' => UserDTO::from(['name' => $row[self::COL_RESPONSAVEL]])
             ]);
             $this->atualizarDatasUltimaSprint($tarefaDTO);
 

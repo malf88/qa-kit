@@ -6,15 +6,24 @@ use App\Modules\GestaoProjetos\Contracts\Repositorys\TarefaRepositoryContract;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaSprintDTO;
 use App\Modules\GestaoProjetos\Models\Tarefa;
+use App\System\Business\UserBusiness;
+use App\System\Contracts\Business\UserBusinessContract;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\DataCollection;
 
 class TarefaRepository implements TarefaRepositoryContract
 {
+    public function __construct(
+        private readonly UserBusinessContract $userBusiness
+    )
+    {
+    }
 
     public function salvar(TarefaDTO $tarefaDTO): TarefaDTO
     {
+        //$user =
         $tarefa = new Tarefa($tarefaDTO->toArray());
+
         $tarefa->save();
         return TarefaDTO::from($tarefa);
     }
