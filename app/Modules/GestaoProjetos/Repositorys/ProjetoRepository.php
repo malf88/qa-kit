@@ -29,7 +29,7 @@ class ProjetoRepository extends BaseRepository implements ProjetoRepositoryContr
         );
     }
 
-    public function buscarPorIdProjeto(int $idEquipe, int $idProjeto): ?ProjetoDTO
+    public function buscarPorIdProjeto(int $idProjeto, int $idEquipe): ?ProjetoDTO
     {
         $projeto = Projeto::select('projetos.*')
             ->selectRaw('

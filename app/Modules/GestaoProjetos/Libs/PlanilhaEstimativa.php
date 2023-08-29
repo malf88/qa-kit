@@ -37,17 +37,15 @@ class PlanilhaEstimativa
         foreach ($values as $key => $row){
             if($this->isHeader($row)) continue;
 
-            $this->sprints->add($this->processaSprint($row, $idProjeto));
+            $this->processaSprint($row, $idProjeto);
 
             if(isset($row[self::COL_PREFIXO]) && $row[self::COL_PREFIXO] != ""){
                 $prefixo = $row[self::COL_PREFIXO];
                 continue;
             }
-            $tarefaDTO = $this->processaTarefa($prefixo, $row, $idProjeto);
+            $this->processaTarefa($prefixo, $row, $idProjeto);
 
-            $this->atualizarDatasUltimaSprint($tarefaDTO);
 
-            $this->sprints->last()->tarefas->add($tarefaDTO);
         }
         return $this;
 
@@ -62,28 +60,31 @@ class PlanilhaEstimativa
         return ($row[self::COL_ID] == 'ID');
     }
 
-    private function processaSprint(array $row, int $idProjeto):SprintDTO
+    private function processaSprint(array $row, int $idProjeto):void
     {
         if(isset($row[self::COL_SPRINT]) && $row[self::COL_SPRINT] != ""){
-            return SprintDTO::from([
+            $this->sprints->add(SprintDTO::from([
                 'nome' => $row[self::COL_SPRINT],
                 'projeto' => ProjetoDTO::from(['id' => $idProjeto]),
                 'projeto_id' => $idProjeto,
                 'tarefas' => Collection::empty()
-            ]);
+            ]));
         }
     }
 
-    private function processaTarefa(string $prefixo, array $row, int $idProjeto):TarefaDTO
+    private function processaTarefa(string $prefixo, array $row, int $idProjeto):void
     {
         if(isset($row[self::COL_TITULO]) && $row[self::COL_TITULO] != ""){
-            return TarefaDTO::from([
+            $tarefaDTO = TarefaDTO::from([
                 'titulo' => $prefixo.' - '.$row[self::COL_TITULO],
                 'projeto_id' => $idProjeto,
                 'status' => TarefaStatusEnum::ABERTA->value,
                 'inicio_estimado' => Carbon::createFromFormat('d/m/Y', $row[self::COL_INICIO]),
                 'termino_estimado' => Carbon::createFromFormat('d/m/Y', $row[self::COL_TERMINO])
             ]);
+            $this->atualizarDatasUltimaSprint($tarefaDTO);
+
+            $this->sprints->last()->tarefas->add($tarefaDTO);
         }
     }
     private function atualizarDatasUltimaSprint(TarefaDTO $tarefaDTO):void
