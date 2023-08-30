@@ -26,8 +26,7 @@ class Tarefa extends Model
         'termino_estimado',
         'projeto_id',
         'responsavel_id',
-        'sprint_id',
-        'responsavel'
+        'sprint_id'
 
     ];
 

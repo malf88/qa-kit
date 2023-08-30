@@ -27,6 +27,7 @@ class TarefaSprintDTO extends DTO
         public ?Carbon $inicio,
         #[WithCast(CastCarbonDate::class)]
         public ?Carbon $termino,
+        public ?string $responsavel
 
     )
     {

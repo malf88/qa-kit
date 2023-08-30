@@ -57,6 +57,7 @@ class TarefaController extends Controller
             'Descrição',
             'Início',
             'Término',
+            'Responsável',
             'Status'
         ];
 

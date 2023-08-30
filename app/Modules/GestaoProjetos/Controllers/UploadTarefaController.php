@@ -39,7 +39,7 @@ class UploadTarefaController extends Controller
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Planilha processada com sucesso']]);
         }catch (NotFoundException $exception){
             return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
-                ->with([Controller::MESSAGE_KEY_ERROR => ['Projeto não encontrado ao importar planilha']]);
+                ->with([Controller::MESSAGE_KEY_ERROR => [$exception->getMessage()]]);
         }catch (UnprocessableEntityException $exception){
             return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
                 ->with([Controller::MESSAGE_KEY_ERROR => $exception->getMessage()])

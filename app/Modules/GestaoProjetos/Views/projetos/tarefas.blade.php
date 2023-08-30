@@ -105,6 +105,7 @@
                                         <td>{{ $tarefa->descricao }}</td>
                                         <td>{{ $tarefa->inicio->format('d/m/Y') }}</td>
                                         <td>{{ $tarefa->termino->format('d/m/Y') }}</td>
+                                        <td>{{ $tarefa->responsavel }}</td>
                                         <td>{{ $tarefa->status }}</td>
                                     </tr>
                                 @else
@@ -114,6 +115,7 @@
                                         <td>{{ $tarefa->descricao }}</td>
                                         <td>{{ $tarefa->inicio->format('d/m/Y') }}</td>
                                         <td>{{ $tarefa->termino->format('d/m/Y') }}</td>
+                                        <td>&nbsp;</td>
                                         <td>&nbsp</td>
 
                                     </tr>
