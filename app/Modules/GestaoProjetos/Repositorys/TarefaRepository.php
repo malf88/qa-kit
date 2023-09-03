@@ -35,7 +35,7 @@ class TarefaRepository implements TarefaRepositoryContract
                                         st.inicio,
                                         st.termino,
                                         st.status,
-                                        st.nome_responsavel as responsavel
+                                        st.id_responsavel as responsavel
                                     FROM
                                         (SELECT
                                              s.id as sprint_id,
@@ -44,7 +44,7 @@ class TarefaRepository implements TarefaRepositoryContract
                                              s.projeto_id,
                                              s.inicio,
                                              s.termino,
-                                             null as nome_responsavel,
+                                             null as id_responsavel,
                                              null as status
                                         FROM gestao_projetos.sprints s
                                         UNION
@@ -55,23 +55,25 @@ class TarefaRepository implements TarefaRepositoryContract
                                             t.projeto_id,
                                             t.inicio_estimado,
                                             t.termino_estimado,
-                                            u.name,
+                                            u.id,
                                             t.status
                                         FROM gestao_projetos.tarefas t
-                                            JOIN users u on u.id = t.responsavel_id) as st
+                                            LEFT JOIN users u on u.id = t.responsavel_id) as st
                                             JOIN projetos.projetos p on p.id = st.projeto_id
                                             JOIN projetos.aplicacoes a ON p.aplicacao_id = a.id
                                             JOIN projetos.aplicacoes_equipes ae ON ae.aplicacao_id = a.id
                                         WHERE projeto_id = ? AND ae.equipe_id = ?
-                                    ORDER BY st.inicio, tarefa_id is not null, tarefa_id',[$idProjeto, $idEquipe]);
+                                    ORDER BY sprint_id, tarefa_id is not null, inicio',[$idProjeto, $idEquipe]);
 
         return TarefaSprintDTO::collection($tarefas);
     }
 
-    public function updateSprint(int $idTarefa, ?int $idSprint): bool
+    public function updateTarefa(TarefaDTO $tarefaDTO, int $idEquipe): bool
     {
-        $tarefa = Tarefa::find($idTarefa);
-        $tarefa->sprint_id = $idSprint;
+        $tarefa = Tarefa::find($tarefaDTO->id);
+        $tarefa->sprint_id = $tarefaDTO->sprint_id;
+        $tarefa->responsavel_id = $tarefaDTO->responsavel_id;
+
         return $tarefa->update();
 
     }

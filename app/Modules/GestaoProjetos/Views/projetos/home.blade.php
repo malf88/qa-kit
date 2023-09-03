@@ -81,9 +81,7 @@
                                           </div>
                                           <div class="row">
                                             <div class="col-md-7">
-                                            @can(\App\Modules\GestaoProjetos\Enums\PermissionEnum::INSERIR_TAREFA->value)
-                                              <x-criar-tarefa />
-                                            @endcan
+
                                             </div>
                                             <div class="col-md-5">
                                             @can(\App\Modules\GestaoProjetos\Enums\PermissionEnum::LISTAR_TAREFA->value)

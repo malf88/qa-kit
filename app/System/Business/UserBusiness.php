@@ -146,4 +146,9 @@ class UserBusiness extends BusinessAbstract implements UserBusinessContract
     {
         return $this->userRepository->buscarUsuario($filter);
     }
+
+    public function buscarUsuariosPorEquipe(int $idEquipe): DataCollection
+    {
+        return $this->userRepository->buscarUsuariosPorEquipe($idEquipe);
+    }
 }

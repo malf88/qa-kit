@@ -8,6 +8,7 @@ use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
+use App\System\Contracts\Business\UserBusinessContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
@@ -27,20 +28,22 @@ class TarefaController extends Controller
     public function __construct(
         private readonly ProjetoBusinessContract $projetoBusiness,
         private readonly TarefaBusinessContract $tarefaBusiness,
-        private readonly SprintBusinessContract $sprintBusiness
+        private readonly SprintBusinessContract $sprintBusiness,
+        private readonly UserBusinessContract $userBusiness
     )
     {
     }
-    public function salvar(Request $request)
+    public function salvar(Request $request, int $idProjeto)
     {
         try{
             $tarefaDto = TarefaDTO::from($request->all());
+            $tarefaDto->projeto_id = $idProjeto;
             $tarefaDto->status = TarefaStatusEnum::ABERTA->value;
             $this->tarefaBusiness->salvar($tarefaDto);
-            return redirect(route('gestao-projetos.projetos.index'))
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Tarefa inserida com sucesso!']]);
         }catch (AccessDeniedException $e){
-            return redirect(route('gestao-projetos.projetos.index'))
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
                 ->with([Controller::MESSAGE_KEY_ERROR => ['Acesso negado']]);
 
         }
@@ -53,11 +56,11 @@ class TarefaController extends Controller
         Auth::user()->can(PermissionEnum::LISTAR_TAREFA->value);
         $heads = [
             ['label' => 'Id', 'width' => 10],
-            'Sprint',
-            'Descrição',
+            ['label' => 'Sprint', 'width' => 15],
+            ['label' => 'Título', 'width' => 30],
             'Início',
             'Término',
-            'Responsável',
+            ['label' => 'Responsável', 'width' => 20],
             'Status'
         ];
 
@@ -69,9 +72,19 @@ class TarefaController extends Controller
         $tarefas = $this->tarefaBusiness->listarTarefasComSprint($idProjeto, EquipeUtils::equipeUsuarioLogado());
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
         $sprints = $this->sprintBusiness->listarSprints($idProjeto, EquipeUtils::equipeUsuarioLogado());
+        $users = $this->userBusiness->buscarUsuariosPorEquipe(EquipeUtils::equipeUsuarioLogado());
+
         return view(
             'gestao-projetos::projetos.tarefas',
-            compact('tarefas', 'projeto', 'sprints', 'heads', 'config', 'projetoController')
+            compact(
+                'tarefas',
+                'projeto',
+                'sprints',
+                'heads',
+                'config',
+                'projetoController',
+                'users'
+            )
         );
 
     }
@@ -79,7 +92,12 @@ class TarefaController extends Controller
         try {
             $this->startTransaction();
             foreach ($request->get('sprint') as $tarefa => $sprint){
-                $this->tarefaBusiness->updateSprint($tarefa, $sprint, EquipeUtils::equipeUsuarioLogado());
+                $tarefa = TarefaDTO::from([
+                    'id' => $tarefa,
+                    'responsavel_id' => $request->get('responsavel')[$tarefa],
+                    'sprint_id' => $sprint
+                ]);
+                $this->tarefaBusiness->updateTarefa($tarefa, EquipeUtils::equipeUsuarioLogado());
             }
             $this->commit();
             return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))

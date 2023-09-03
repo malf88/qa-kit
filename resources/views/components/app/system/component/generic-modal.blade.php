@@ -20,7 +20,7 @@
     </div>
 </x-adminlte-modal>
 <x-adminlte-button
-    class="btn-md mb-2"
+    class="btn-sm mb-2"
     theme="primary"
     label="{{ $labelBtnAbrir }}"
     title="Upload"

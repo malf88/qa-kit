@@ -11,7 +11,7 @@ interface TarefaBusinessContract
 
     public function salvar(TarefaDTO $tarefaDTO): TarefaDTO;
 
-    public function updateSprint(int $idTarefa, ?int $idSprint, int $idEquipe): bool;
+    public function updateTarefa(TarefaDTO $tarefaDTO, int $idEquipe): bool;
 
     public function podeAlterarTarefa(int $idTarefa, int $idEquipe): bool;
 }

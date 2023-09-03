@@ -14,6 +14,6 @@ interface UserRepositoryContract extends BaseRepositoryContract
     public function salvar(UserDTO $userDTO): UserDTO;
     public function vincularPerfil(array $perfil, int $userId):UserDTO;
     public function buscarUsuario(array $filter):DataCollection;
-
+    public function buscarUsuariosPorEquipe(int $idEquipe):DataCollection;
     public function alterarEquipeSelecionada(int $idUsuario, int $idEquipe):bool;
 }

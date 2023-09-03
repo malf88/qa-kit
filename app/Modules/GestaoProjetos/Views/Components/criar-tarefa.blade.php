@@ -2,7 +2,7 @@
 
 <x-adminlte-modal
     id="modalMin_tarefa_inserir_"
-    title="Inserir nova tarefa para ${task.name}"
+    title="Inserir nova tarefa para {{ $projeto->nome }}"
     static-backdrop
     size="md"
 
@@ -11,9 +11,9 @@
     <div class="row">
         <div class="col-md-12">
 
-            <form method="post" action="{{ route('gestao-projetos.tarefas.salvar') }}">
+            <form method="post" action="{{ route('gestao-projetos.tarefas.salvar', $projeto->id) }}">
                 @csrf
-                <input type="hidden" id="idProjeto" name="projeto_id" value="${task.id}">
+                <input type="hidden" id="idProjeto" name="projeto_id" value="{{ $projeto->id }}">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
@@ -29,10 +29,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <x-adminlte-input
-                                label="Estimativa de início"
+                                label="Est. de início"
                                 name="inicio_estimado"
                                 placeholder="Data"
                                 type="date"
@@ -41,16 +41,31 @@
                             />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <x-adminlte-input
-                                label="Estimativa de término"
+                                label="Est. de término"
                                 name="termino_estimado"
                                 placeholder="Data"
                                 type="date"
                                 fgroup-class="col-md-12"
                                 value="{{ old('termino_estimado','') }}"
                             />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <x-adminlte-select
+                                name="sprint_id"
+                                label="Sprint"
+                                fgroup-class="col-md-12"
+                            >
+                                <option value="">Selecione uma sprint</option>
+                                @foreach($sprints as $sprint)
+                                    <option
+                                        value="{{ $sprint->id }}">{{ $sprint->nome }}</option>
+                                @endforeach
+                            </x-adminlte-select>
                         </div>
                     </div>
                 </div>
@@ -70,7 +85,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="row">
+                        <div class="row pl-2">
                             <x-adminlte-button
                                 label="Salvar"
                                 type="submit"

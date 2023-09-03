@@ -35,14 +35,14 @@ class TarefaBusiness extends BusinessAbstract implements TarefaBusinessContract
         return $this->tarefaRepository->listarTarefasComSprint($idProjeto, $idEquipe);
     }
 
-    public function updateSprint(int $idTarefa, ?int $idSprint, int $idEquipe): bool
+    public function updateTarefa(TarefaDTO $tarefaDTO, int $idEquipe): bool
     {
         $this->can(PermissionEnum::ALTERAR_TAREFA->value);
-        $tarefa = $this->tarefaRepository->buscarTarefaPorId($idTarefa, $idEquipe);
+        $tarefa = $this->tarefaRepository->buscarTarefaPorId($tarefaDTO->id, $idEquipe);
         if($tarefa == null){
             throw new NotFoundException();
         }
-        return $this->tarefaRepository->updateSprint($idTarefa, $idSprint);
+        return $this->tarefaRepository->updateTarefa($tarefaDTO, $idEquipe);
     }
 
 
