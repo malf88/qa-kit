@@ -26,4 +26,14 @@ class SprintBusiness extends BusinessAbstract implements SprintBusinessContract
     {
         return $this->sprintRepository->salvar($sprintDTO);
     }
+
+    public function existeSprint(string $titulo, int $idProjeto, int $idEquipe): bool
+    {
+        return $this->sprintRepository->existeSprint($titulo, $idProjeto, $idEquipe);
+    }
+
+    public function buscarSprintPorNome(string $nome, int $idProjeto, int $idEquipe): ?SprintDTO
+    {
+        return $this->sprintRepository->buscarSprintPorNome($nome, $idProjeto, $idEquipe);
+    }
 }

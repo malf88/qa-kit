@@ -55,4 +55,9 @@ class TarefaBusiness extends BusinessAbstract implements TarefaBusinessContract
             ($this->canDo(PermissionEnum::ALTERAR_TAREFA->value) &&
                 $tarefa?->status != TarefaStatusEnum::CONCLUIDA->value);
     }
+
+    public function existeTarefaPorTitulo(string $titulo, int $idProjeto, int $idEquipe): bool
+    {
+        return $this->tarefaRepository->existeTarefaPorTitulo($titulo, $idProjeto, $idEquipe);
+    }
 }

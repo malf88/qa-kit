@@ -14,4 +14,6 @@ interface TarefaBusinessContract
     public function updateTarefa(TarefaDTO $tarefaDTO, int $idEquipe): bool;
 
     public function podeAlterarTarefa(int $idTarefa, int $idEquipe): bool;
+
+    public function existeTarefaPorTitulo(string $titulo, int $idProjeto, int $idEquipe): bool;
 }

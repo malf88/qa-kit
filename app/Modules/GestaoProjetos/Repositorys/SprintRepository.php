@@ -30,4 +30,32 @@ class SprintRepository implements SprintRepositoryContract
         $sprint->save();
         return SprintDTO::from($sprint);
     }
+
+    public function existeSprint(string $nome, int $idProjeto, int $idEquipe): bool
+    {
+        return Sprint::select('sprints.*')
+            ->join('projetos.projetos', 'sprints.projeto_id', '=', 'projetos.id')
+            ->join('projetos.aplicacoes', 'projetos.aplicacao_id', '=', 'aplicacoes.id')
+            ->join('projetos.aplicacoes_equipes', 'aplicacoes.id', '=', 'aplicacoes_equipes.aplicacao_id')
+            ->where('sprints.projeto_id',$idProjeto)
+            ->where('aplicacoes_equipes.equipe_id', $idEquipe)
+            ->where('sprints.nome', 'ILIKE', $nome)
+            ->count() > 0;
+    }
+
+    public function buscarSprintPorNome(string $nome, int $idProjeto, int $idEquipe): ?SprintDTO
+    {
+        $sprint =  Sprint::select('sprints.*')
+            ->join('projetos.projetos', 'sprints.projeto_id', '=', 'projetos.id')
+            ->join('projetos.aplicacoes', 'projetos.aplicacao_id', '=', 'aplicacoes.id')
+            ->join('projetos.aplicacoes_equipes', 'aplicacoes.id', '=', 'aplicacoes_equipes.aplicacao_id')
+            ->where('sprints.projeto_id',$idProjeto)
+            ->where('aplicacoes_equipes.equipe_id', $idEquipe)
+            ->where('sprints.nome', 'ILIKE', $nome)
+            ->with(['projeto', 'tarefas'])
+            ->first();
+        if(!$sprint) return null;
+        return SprintDTO::from($sprint);
+
+    }
 }

@@ -50,10 +50,17 @@ class UploadTarefaBusiness extends BusinessAbstract implements UploadTarefaBusin
             $this->planilhaEstimativa
                 ->processaPlanilha($idPlanilha, $idProjeto)
                 ->getSprints()
-                ->each(function(SprintDTO $item, $key) use ($sprints){
-                    $sprint = $this->sprintBusiness->salvar($item);
+                ->each(function(SprintDTO $item, $key) use ($sprints, $idEquipe){
+                    if(!$this->sprintBusiness->existeSprint($item->nome, $item->projeto_id, $idEquipe)){
+                        $sprint = $this->sprintBusiness->salvar($item);
+                    }else{
+                        $sprint = $this->sprintBusiness->buscarSprintPorNome($item->nome, $item->projeto_id, $idEquipe);
+                    }
                     $sprint->tarefas = Collection::empty();
-                    $item->tarefas->each(function(TarefaDTO $item, $key) use(&$sprint) {
+                    $item->tarefas->each(function(TarefaDTO $item, $key) use(&$sprint, $idEquipe) {
+                        if($this->tarefaBusiness->existeTarefaPorTitulo($item->titulo, $item->projeto_id, $idEquipe)){
+                            return;
+                        }
                         $item->sprint = $sprint;
                         $item->sprint_id = $sprint->id;
                         $user = $this->userBusiness->buscarUsuario(['name' => $item->responsavel->name]);
@@ -61,7 +68,7 @@ class UploadTarefaBusiness extends BusinessAbstract implements UploadTarefaBusin
                         if($user->first() == null)
                             throw new NotFoundException('Usuário não encontrado para o item '.$item->titulo);
                         $item->responsavel_id = $user->first()->id;
-                        
+
                         $tarefa = $this->tarefaBusiness->salvar($item);
 
                         $sprint->tarefas->add($tarefa);
