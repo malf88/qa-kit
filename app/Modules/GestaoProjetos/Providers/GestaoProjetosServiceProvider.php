@@ -6,6 +6,7 @@ use App\Modules\GestaoProjetos\Business\ProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\SprintBusiness;
 use App\Modules\GestaoProjetos\Business\TarefaBusiness;
 use App\Modules\GestaoProjetos\Business\UploadTarefaBusiness;
+use App\Modules\GestaoProjetos\Components\AlterarTarefa;
 use App\Modules\GestaoProjetos\Components\CriarTarefa;
 use App\Modules\GestaoProjetos\Config\MenuConfig;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
@@ -54,7 +55,7 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         $this->moduleExists(ProjetosServiceProvider::class);
         MenuConfig::configureMenuModule();
         Blade::component('criar-tarefa', CriarTarefa::class);
-
+        Blade::component('alterar-tarefa', AlterarTarefa::class);
         //DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
 
         parent::boot();

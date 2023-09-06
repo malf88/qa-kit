@@ -88,6 +88,13 @@ class TarefaController extends Controller
         );
 
     }
+
+    /**
+     * @deprecated
+     * @param Request $request
+     * @param int $idProjeto
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function updateTarefa(Request $request, int $idProjeto){
         try {
             $this->startTransaction();
@@ -112,6 +119,23 @@ class TarefaController extends Controller
         }
     }
 
+    public function alterar(Request $request, int $idProjeto, int $idTarefa)
+    {
+        $tarefaDTO = TarefaDTO::from($request->all());
+        $tarefaDTO->projeto_id = $idProjeto;
+        $tarefaDTO->id = $idTarefa;
+        try {
+            $this->tarefaBusiness->updateTarefa($tarefaDTO, EquipeUtils::equipeUsuarioLogado());
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Tarefas atualizadas com sucesso']]);
+        }catch (UnauthorizedException $e){
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Acesso não autorizado']]);
+        }catch (NotFoundException $e){
+            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Tarefa não encontrada.']]);
+        }
+    }
     public function podeEditarTarefa(int $idTarefa):bool
     {
         return $this->tarefaBusiness->podeAlterarTarefa($idTarefa, EquipeUtils::equipeUsuarioLogado());

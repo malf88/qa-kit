@@ -80,7 +80,7 @@
 
                     </div>
                     <hr/>
-                    <form method="post" action="">
+
                         @csrf
                         <x-adminlte-datatable
                             id="tarefas"
@@ -98,37 +98,55 @@
                                         @else
                                             class="{{ ($tarefa->sprint_id == null) ? 'bg-gradient-red' : '' }}"
                                         @endif>
-                                        <td>{{ $tarefa->tarefa_id }}</td>
                                         <td>
-                                            @if($projetoController->podeEditarTarefa($tarefa->tarefa_id))
-                                                <x-adminlte-select
-                                                    name="sprint[{{ $tarefa->tarefa_id }}]"
-                                                    fgroup-class="col-md-12"
-                                                >
-                                                    <option value=""></option>
-                                                    @foreach($sprints as $sprint)
-                                                        <option
-                                                            value="{{ $sprint->id }}" {{ ($sprint->id == $tarefa->sprint_id)? 'selected' : '' }}>{{ $sprint->nome }}</option>
-                                                    @endforeach
-                                                </x-adminlte-select>
+                                            @can(PermissionEnum::ALTERAR_TAREFA->value)
+                                                <x-alterar-tarefa labelBotaoAbrir="{{$tarefa->tarefa_id}}" iconeBotaoAbrir="" idTarefa="{{$tarefa->tarefa_id}}" :projeto="$projeto"/>
+                                            @else
+                                                {{ $tarefa->tarefa_id }}
+                                            @endcan
 
+                                        </td>
+                                        <td>
+
+                                            @if($projetoController->podeEditarTarefa($tarefa->tarefa_id))
+                                                <form method="post" id="formTableUpdateSprint" action="{{ route('gestao-projetos.tarefas.alterar', [$projeto->id, $tarefa->tarefa_id]) }}">
+                                                    @csrf
+                                                    @method('put')
+                                                    <x-adminlte-select
+                                                        onchange="this.form.submit()"
+                                                        name="sprint_id"
+                                                        fgroup-class="col-md-12"
+                                                    >
+                                                        <option value=""></option>
+                                                        @foreach($sprints as $sprint)
+                                                            <option
+                                                                value="{{ $sprint->id }}" {{ ($sprint->id == $tarefa->sprint_id)? 'selected' : '' }}>{{ $sprint->nome }}</option>
+                                                        @endforeach
+                                                    </x-adminlte-select>
+                                                </form>
                                             @endif
+
                                         </td>
                                         <td>{{ $tarefa->descricao }}</td>
                                         <td>{{ $tarefa->inicio->format('d/m/Y') }}</td>
                                         <td>{{ $tarefa->termino->format('d/m/Y') }}</td>
                                         <td>
                                             @if($projetoController->podeEditarTarefa($tarefa->tarefa_id))
-                                                <x-adminlte-select
-                                                    name="responsavel[{{ $tarefa->tarefa_id }}]"
-                                                    fgroup-class="col-md-12"
-                                                >
-                                                    <option value=""></option>
-                                                    @foreach($users as $user)
-                                                        <option
-                                                            value="{{ $user->id }}" {{ ($user->id == $tarefa->responsavel)? 'selected' : '' }}>{{ $user->name }}</option>
-                                                    @endforeach
-                                                </x-adminlte-select>
+                                                <form method="post" id="formTableUpdateResponsavel" action="{{ route('gestao-projetos.tarefas.alterar', [$projeto->id, $tarefa->tarefa_id]) }}">
+                                                    @method('put')
+                                                    @csrf
+                                                    <x-adminlte-select
+                                                        onchange="this.form.submit()"
+                                                        name="responsavel_id"
+                                                        fgroup-class="col-md-12"
+                                                    >
+                                                        <option value=""></option>
+                                                        @foreach($users as $user)
+                                                            <option
+                                                                value="{{ $user->id }}" {{ ($user->id == $tarefa->responsavel)? 'selected' : '' }}>{{ $user->name }}</option>
+                                                        @endforeach
+                                                    </x-adminlte-select>
+                                                </form>
 
                                             @else
                                                 {{ $users->where('id','=',$tarefa->responsavel)->first()?->name }}
@@ -157,7 +175,8 @@
                                     label="Salvar"
                                     theme="success"
                                     icon="fas fa-save"
-                                    type="submit"
+                                    type="button"
+                                    onclick="document.getElementById('formTableUpdate').submit()"
                                     class="w-100"
                                 />
                             </div>

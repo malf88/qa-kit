@@ -71,8 +71,13 @@ class TarefaRepository implements TarefaRepositoryContract
     public function updateTarefa(TarefaDTO $tarefaDTO, int $idEquipe): bool
     {
         $tarefa = Tarefa::find($tarefaDTO->id);
-        $tarefa->sprint_id = $tarefaDTO->sprint_id;
-        $tarefa->responsavel_id = $tarefaDTO->responsavel_id;
+        $tarefa->id = $tarefaDTO->id;
+        $tarefa->titulo = $tarefaDTO->titulo ?? $tarefa->titulo;
+        $tarefa->descricao = $tarefaDTO->descricao ?? $tarefa->descricao;
+        $tarefa->inicio_estimado = $tarefaDTO->inicio_estimado ?? $tarefa->inicio_estimado;
+        $tarefa->termino_estimado = $tarefaDTO->termino_estimado ?? $tarefa->termino_estimado;
+        $tarefa->sprint_id = $tarefaDTO->sprint_id ?? $tarefa->sprint_id;
+        $tarefa->responsavel_id = $tarefaDTO->responsavel_id ?? $tarefa->responsavel_id ;
 
         return $tarefa->update();
 
@@ -80,13 +85,13 @@ class TarefaRepository implements TarefaRepositoryContract
 
     public function buscarTarefaPorId(int $idTarefa, int $idEquipe): ?TarefaDTO
     {
-        $tarefa = Tarefa::join('projetos.projetos', 'projetos.id', '=', 'tarefas.projeto_id')
+        $tarefa = Tarefa::select('tarefas.*')
+            ->join('projetos.projetos', 'projetos.id', '=', 'tarefas.projeto_id')
             ->join('projetos.aplicacoes', 'projetos.aplicacao_id', '=', 'aplicacoes.id')
             ->join('projetos.aplicacoes_equipes', 'aplicacoes.id', '=', 'aplicacoes_equipes.aplicacao_id')
             ->where('equipe_id', $idEquipe)
             ->where('tarefas.id', $idTarefa)
             ->first();
-
         return ($tarefa != null) ? TarefaDTO::from($tarefa) : $tarefa;
     }
 

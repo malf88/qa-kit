@@ -12,7 +12,10 @@ Route::group(['prefix' => ''],function () {
         Route::post('/',[TarefaController::class,'updateTarefa'])->name('gestao-projetos.projetos.tarefas.update');
         Route::post('/upload',[UploadTarefaController::class,'uploadTarefa'])->name('gestao-projetos.projetos.tarefas.upload');
         Route::post('/salvar', [TarefaController::class, 'salvar'])->name('gestao-projetos.tarefas.salvar');
+        Route::group(['prefix' => '/{idTarefa}'],function (){
+            Route::put('/alterar', [TarefaController::class, 'alterar'])->name('gestao-projetos.tarefas.alterar');
 
+        });
     });
 });
 

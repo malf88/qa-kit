@@ -12,4 +12,5 @@ interface SprintRepositoryContract
     public function salvar(SprintDTO $sprintDTO): SprintDTO;
     public function existeSprint(string $nome, int $idProjeto, int $idEquipe): bool;
     public function buscarSprintPorNome(string $nome, int $idProjeto, int $idEquipe): ?SprintDTO;
+
 }
