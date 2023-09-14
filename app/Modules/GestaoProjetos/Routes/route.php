@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Modules\GestaoProjetos\Controllers\ExportProjectTrelloController;
 use App\Modules\GestaoProjetos\Controllers\UploadTarefaController;
 use Illuminate\Support\Facades\Route;
 use App\Modules\GestaoProjetos\Controllers\ProjetoController;
@@ -12,6 +13,8 @@ Route::group(['prefix' => ''],function () {
         Route::post('/',[TarefaController::class,'updateTarefa'])->name('gestao-projetos.projetos.tarefas.update');
         Route::post('/upload',[UploadTarefaController::class,'uploadTarefa'])->name('gestao-projetos.projetos.tarefas.upload');
         Route::post('/salvar', [TarefaController::class, 'salvar'])->name('gestao-projetos.tarefas.salvar');
+        Route::get('/exportar/trello',[ExportProjectTrelloController::class,'exportar'])->name('gestao-projetos.projetos.export-trello');
+
         Route::group(['prefix' => '/{idTarefa}'],function (){
             Route::put('/alterar', [TarefaController::class, 'alterar'])->name('gestao-projetos.tarefas.alterar');
 

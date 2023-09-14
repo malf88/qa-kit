@@ -28,6 +28,6 @@ class TrelloBoards extends AbstractTrello
     {
         //dd($this->request('GET', [],['{id}' => $parameters['id']]));
 
-        return dd($this->request('GET', [],['{id}' => $trelloBoardDTO->id]));
+        return $this->request('GET', [],['{id}' => $trelloBoardDTO->id]);
     }
 }

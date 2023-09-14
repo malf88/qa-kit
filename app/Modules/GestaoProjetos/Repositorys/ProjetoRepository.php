@@ -6,7 +6,7 @@ use App\Modules\GestaoProjetos\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
 
-use App\Modules\Projetos\Models\Projeto;
+use App\Modules\GestaoProjetos\Models\Projeto;
 use App\Modules\Projetos\Repositorys\ProjetoRepository as BaseRepository;
 use Spatie\LaravelData\DataCollection;
 
@@ -41,7 +41,7 @@ class ProjetoRepository extends BaseRepository implements ProjetoRepositoryContr
             ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
             ->where('equipe_id',$idEquipe)
             ->where('projetos.id', $idProjeto)
-            ->with(['aplicacao'])
+            ->with(['aplicacao','tarefas'])
             ->first();
         return $projeto != null ? ProjetoDTO::from($projeto): null;
     }

@@ -34,7 +34,7 @@
                                     <x-generic-modal
                                         idModal="uploadPlanilhaTarefas"
                                         labelBtnAbrir="Importar tarefas"
-                                        icon="fas fa-save"
+                                        icon="fas fa-upload"
                                         title="Importar tarefas"
                                     >
                                         <form method="post"
@@ -72,10 +72,14 @@
                             </div>
                             <div class="row">
                                 @can(PermissionEnum::INSERIR_TAREFA->value)
-                                    <x-criar-tarefa :projeto="$projeto"/>
+                                    <x-criar-tarefa iconeBotaoAbrir="fas fa-save" :projeto="$projeto"/>
                                 @endcan
                             </div>
-
+                            <div class="row">
+                                @can(PermissionEnum::EXPORTAR_PROJETO_TRELLO->value)
+                                    <a class="btn btn-warning btn-sm mt-2" href="{{route('gestao-projetos.projetos.export-trello',$projeto->id)}}"><i class="fab fa-trello"></i> Exportar para o Trello</a>
+                                @endcan
+                            </div>
                         </div>
 
                     </div>
@@ -170,19 +174,8 @@
                             @endforeach
                         </x-adminlte-datatable>
                         <div class="row">
-                            <div class="col-md-2">
-                                <x-adminlte-button
-                                    label="Salvar"
-                                    theme="success"
-                                    icon="fas fa-save"
-                                    type="button"
-                                    onclick="document.getElementById('formTableUpdate').submit()"
-                                    class="w-100"
-                                />
-                            </div>
-                        </div>
 
-                    </form>
+                        </div>
                 </div>
             </div>
         </div>

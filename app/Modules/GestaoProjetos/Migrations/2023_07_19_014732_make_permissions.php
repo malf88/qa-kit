@@ -18,6 +18,7 @@ return new class extends Migration
         Permission::create(['name' => 'INSERIR_TAREFA']);
         Permission::create(['name' => 'ALTERAR_TAREFA']);
         Permission::create(['name' => 'ARQUIVAR_TAREFA']);
+        Permission::create(['name' => 'EXPORTAR_PROJETO_TRELLO']);
 
         Permission::create(['name' => 'INSERIR_OBSERVACAO_TAREFA']);
 
@@ -47,7 +48,8 @@ return new class extends Migration
                 'ARQUIVAR_TAREFA',
                 'VER_KANBAN',
                 'VER_GANTT',
-                'INSERIR_OBSERVACAO_TAREFA'
+                'INSERIR_OBSERVACAO_TAREFA',
+                'EXPORTAR_PROJETO_TRELLO'
             ]);
         $roleDesenvolvedor = Role::findByName('DESENVOLVEDOR');
         $roleDesenvolvedor->givePermissionTo([

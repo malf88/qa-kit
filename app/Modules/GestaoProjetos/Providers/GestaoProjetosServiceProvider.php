@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoProjetos\Providers;
 
+use App\Modules\GestaoProjetos\Business\ExportProjectTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\ProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\SprintBusiness;
 use App\Modules\GestaoProjetos\Business\TarefaBusiness;
@@ -9,14 +10,17 @@ use App\Modules\GestaoProjetos\Business\UploadTarefaBusiness;
 use App\Modules\GestaoProjetos\Components\AlterarTarefa;
 use App\Modules\GestaoProjetos\Components\CriarTarefa;
 use App\Modules\GestaoProjetos\Config\MenuConfig;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportProjectTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\UploadTarefaBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Repositorys\ExportProjectTrelloRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\SprintRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\TarefaRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\UploadTarefaRepositoryContract;
+use App\Modules\GestaoProjetos\Repositorys\ExportProjectTrelloRepository;
 use App\Modules\GestaoProjetos\Repositorys\ProjetoRepository;
 use App\Modules\GestaoProjetos\Repositorys\SprintRepository;
 use App\Modules\GestaoProjetos\Repositorys\TarefaRepository;
@@ -40,7 +44,9 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         SprintRepositoryContract::class => SprintRepository::class,
         SprintBusinessContract::class => SprintBusiness::class,
         UploadTarefaBusinessContract::class => UploadTarefaBusiness::class,
-        UploadTarefaRepositoryContract::class => UploadTarefaRepository::class
+        UploadTarefaRepositoryContract::class => UploadTarefaRepository::class,
+        ExportProjectTrelloRepositoryContract::class => ExportProjectTrelloRepository::class,
+        ExportProjectTrelloBusinessContract::class => ExportProjectTrelloBusiness::class
     ];
     /**
      * Register services.

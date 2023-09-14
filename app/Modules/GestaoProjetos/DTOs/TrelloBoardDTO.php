@@ -18,7 +18,10 @@ class TrelloBoardDTO extends DTO
         public ?string $url,
         public ?string $shortUrl,
         public ?array $prefs,
-        public ?array $labelNames
+        public ?array $labelNames,
+        public ?bool $defaultLabels,
+        public ?bool $defaultLists,
+
     )
     {
     }

@@ -12,7 +12,12 @@ class TrelloLists extends AbstractTrello
     protected string $path = 'boards/{id}/lists';
     public function get(mixed $parameters): mixed
     {
-         TrelloListDTO::collection($this->request('GET', [],['{id}' => $parameters['id']]));
+         return TrelloListDTO::collection($this->request('GET', [],['{id}' => $parameters['id']]));
+
+    }
+    public function create(string $idBoard, TrelloListDTO $trelloListDTO): mixed
+    {
+        return TrelloListDTO::from($this->request('POST', $trelloListDTO->toArray(),['{id}' => $idBoard]));
 
     }
 

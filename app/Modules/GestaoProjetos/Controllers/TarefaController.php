@@ -14,12 +14,9 @@ use App\System\Exceptions\UnauthorizedException;
 use App\System\Http\Controllers\Controller;
 use App\System\Traits\TransactionDatabase;
 use App\System\Utils\EquipeUtils;
-use Google\Client;
-use Google_Service_Sheets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Revolution\Google\Sheets\Facades\Sheets;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class TarefaController extends Controller
@@ -51,8 +48,6 @@ class TarefaController extends Controller
     }
     public function tarefas(Request $request, int $idProjeto)
     {
-
-//        dd($values);
         Auth::user()->can(PermissionEnum::LISTAR_TAREFA->value);
         $heads = [
             ['label' => 'Id', 'width' => 10],
@@ -87,36 +82,6 @@ class TarefaController extends Controller
             )
         );
 
-    }
-
-    /**
-     * @deprecated
-     * @param Request $request
-     * @param int $idProjeto
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function updateTarefa(Request $request, int $idProjeto){
-        try {
-            $this->startTransaction();
-            foreach ($request->get('sprint') as $tarefa => $sprint){
-                $tarefa = TarefaDTO::from([
-                    'id' => $tarefa,
-                    'responsavel_id' => $request->get('responsavel')[$tarefa],
-                    'sprint_id' => $sprint
-                ]);
-                $this->tarefaBusiness->updateTarefa($tarefa, EquipeUtils::equipeUsuarioLogado());
-            }
-            $this->commit();
-            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
-                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Tarefas atualizadas com sucesso']]);
-        }catch (UnauthorizedException $e){
-            $this->rollback();
-            throw $e;
-        }catch (NotFoundException $e){
-            $this->rollback();
-            return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
-                ->with([Controller::MESSAGE_KEY_SUCCESS => ['Tarefa não encontrada.']]);
-        }
     }
 
     public function alterar(Request $request, int $idProjeto, int $idTarefa)
