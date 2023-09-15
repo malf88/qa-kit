@@ -34,12 +34,12 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('integracoes.integracoes_sprints', function (Blueprint $table) {
+        Schema::create('integracoes.integracoes_usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('id_externo');
-            $table->bigInteger('sprint_id');
+            $table->bigInteger('user_id');
             $table->text('retorno');
-            $table->foreign('sprint_id')->on('gestao_projetos.sprints')->references('id');
+            $table->foreign('user_id')->on('users')->references('id');
 
 
             $table->timestamps();

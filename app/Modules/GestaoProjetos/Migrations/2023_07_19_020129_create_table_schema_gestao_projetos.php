@@ -13,6 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         DB::unprepared('CREATE SCHEMA gestao_projetos');
+        DB::unprepared('CREATE SCHEMA integracoes');
     }
 
     /**
