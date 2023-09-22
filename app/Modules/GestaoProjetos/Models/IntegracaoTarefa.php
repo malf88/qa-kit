@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class IntegracaoTarefas extends Model
+class IntegracaoTarefa extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'integracoes.integracoes_tarefas';

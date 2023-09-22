@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class IntegracaoSprint extends Model
+class IntegracaoUsuario extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'integracoes.integracoes_sprint';
+    protected $table = 'integracoes.integracoes_usuarios';
 }

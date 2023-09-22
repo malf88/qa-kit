@@ -16,11 +16,17 @@ use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\UploadTarefaBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\ExportProjectTrelloRepositoryContract;
+use App\Modules\GestaoProjetos\Contracts\Repositorys\IntegracaoProjetoRepositoryContract;
+use App\Modules\GestaoProjetos\Contracts\Repositorys\IntegracaoTarefaRepositoryContract;
+use App\Modules\GestaoProjetos\Contracts\Repositorys\IntegracaoUsuarioRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\ProjetoRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\SprintRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\TarefaRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\UploadTarefaRepositoryContract;
 use App\Modules\GestaoProjetos\Repositorys\ExportProjectTrelloRepository;
+use App\Modules\GestaoProjetos\Repositorys\IntegracaoProjetoRepository;
+use App\Modules\GestaoProjetos\Repositorys\IntegracaoTarefaRepository;
+use App\Modules\GestaoProjetos\Repositorys\IntegracaoUsuarioRepository;
 use App\Modules\GestaoProjetos\Repositorys\ProjetoRepository;
 use App\Modules\GestaoProjetos\Repositorys\SprintRepository;
 use App\Modules\GestaoProjetos\Repositorys\TarefaRepository;
@@ -46,7 +52,10 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         UploadTarefaBusinessContract::class => UploadTarefaBusiness::class,
         UploadTarefaRepositoryContract::class => UploadTarefaRepository::class,
         ExportProjectTrelloRepositoryContract::class => ExportProjectTrelloRepository::class,
-        ExportProjectTrelloBusinessContract::class => ExportProjectTrelloBusiness::class
+        ExportProjectTrelloBusinessContract::class => ExportProjectTrelloBusiness::class,
+        IntegracaoUsuarioRepositoryContract::class => IntegracaoUsuarioRepository::class,
+        IntegracaoProjetoRepositoryContract::class => IntegracaoProjetoRepository::class,
+        IntegracaoTarefaRepositoryContract::class => IntegracaoTarefaRepository::class
     ];
     /**
      * Register services.

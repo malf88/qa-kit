@@ -15,8 +15,13 @@ use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoardMembers;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloCards;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloLists;
+use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
+use App\Modules\GestaoProjetos\Services\IntegracaoCard;
+use App\Modules\GestaoProjetos\Services\IntegracaoLists;
+use App\Modules\GestaoProjetos\Services\IntegracaoUser;
 use App\System\Exceptions\NotFoundException;
 use App\System\Impl\BusinessAbstract;
+use Illuminate\Support\Collection;
 
 class ExportProjectTrelloBusiness extends BusinessAbstract implements ExportProjectTrelloBusinessContract
 {
@@ -34,58 +39,24 @@ class ExportProjectTrelloBusiness extends BusinessAbstract implements ExportProj
         if($projeto == null){
             throw new NotFoundException();
         }
-        $board = TrelloBoardDTO::from([
-            'name' => $projeto->nome,
-            'desc' => $projeto->descricao,
-            'labelNames' => ['PHP', 'JAVA'],
-            'defaultLists' => false
-        ]);
+        $serviceBoardIntegracao = new IntegracaoBoard();
+        $board = $serviceBoardIntegracao->integrar($projeto);
 
-        $trelloBoardService = new TrelloBoards(
-            'ATTAe8d2bec2b9b0a5874bb88ccda0d6d0c5d187feea9d6e15c6a7ef643276d48ba8D8DEF6DB',
-            '4af9dd9f228be32b068c307a01ee268f'
-        );
-        $board = $trelloBoardService->create($board);
-        $trelloListService = new TrelloLists(
-            'ATTAe8d2bec2b9b0a5874bb88ccda0d6d0c5d187feea9d6e15c6a7ef643276d48ba8D8DEF6DB',
-            '4af9dd9f228be32b068c307a01ee268f'
-        );
-        foreach (array_reverse(TarefaStatusEnum::cases()) as $lists){
-            $trelloList = TrelloListDTO::from([
-                'name' => $lists->value,
-                'idBoard'   => $board->id
-            ]);
-
-            $trelloListService->create($board->id, $trelloList);
+        $integracaoList = new IntegracaoLists();
+        $lists = Collection::empty();
+        foreach (array_reverse(TarefaStatusEnum::cases()) as $listsName){
+            $lists->add($integracaoList->integrar($listsName, $board));
         }
-        $lists = $trelloListService->get(['id' => $board->id]);
-        $idListAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first()->id;
-        $trelloCardService = new TrelloCards(
-            'ATTAe8d2bec2b9b0a5874bb88ccda0d6d0c5d187feea9d6e15c6a7ef643276d48ba8D8DEF6DB',
-            '4af9dd9f228be32b068c307a01ee268f'
-        );
-
-        $projeto->tarefas->each(function(TarefaDTO $tarefa, $indice) use($board, $trelloCardService, $idListAberta){
-            $trelloUserService = new TrelloBoardMembers(
-                'ATTAe8d2bec2b9b0a5874bb88ccda0d6d0c5d187feea9d6e15c6a7ef643276d48ba8D8DEF6DB',
-                '4af9dd9f228be32b068c307a01ee268f'
-            );
-//            $user = $trelloUserService->get(['id' => $board->id]);
-            $user = $trelloUserService->addByEmail($board->id, TrelloMemberDTO::from(['email' => $tarefa->responsavel->email]));
-            $user = $trelloUserService->get(['id' => $board->id]);
+//        $lists = $trelloListService->get(['id' => $board->id]);
+        $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
 
 
+        $projeto->tarefas->each(function(TarefaDTO $tarefa, $indice) use($board, $listAberta){
+            $integracaoUser = new IntegracaoUser();
+            $user = $integracaoUser->integrar($tarefa->responsavel, $board);
 
-            $trelloCard = TrelloCardDTO::from([
-                'idBoard' => $board->id,
-                'desc'  => $tarefa->descricao,
-                'name'  => $tarefa->titulo,
-                'start' => $tarefa->inicio_estimado,
-                'idList' => $idListAberta
-
-            ]);
-
-            $trelloCardService->create($trelloCard);
+            $integracaoCard = new IntegracaoCard();
+            $card = $integracaoCard->integrar($tarefa, $board, $listAberta);
         });
 
         return true;
