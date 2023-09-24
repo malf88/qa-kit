@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoProjetos\Business;
 
+use App\Modules\GestaoProjetos\Contracts\Repositorys\IntegracaoTarefaRepositoryContract;
 use App\Modules\GestaoProjetos\Contracts\Repositorys\IntegracaoUsuarioRepositoryContract;
 use App\Modules\GestaoProjetos\Repositorys\IntegracaoUsuarioRepository;
 use App\System\Contracts\Business\IntegracaoBusinessContract;

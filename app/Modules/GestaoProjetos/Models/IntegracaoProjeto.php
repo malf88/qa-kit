@@ -10,4 +10,9 @@ class IntegracaoProjeto extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'integracoes.integracoes_projetos';
+    protected $fillable = [
+      'projeto_id',
+      'id_externo',
+      'retorno'
+    ];
 }

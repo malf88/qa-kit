@@ -39,7 +39,7 @@ class ExportProjectTrelloBusiness extends BusinessAbstract implements ExportProj
         if($projeto == null){
             throw new NotFoundException();
         }
-        $serviceBoardIntegracao = new IntegracaoBoard();
+        $serviceBoardIntegracao = app()->make(IntegracaoBoard::class);
         $board = $serviceBoardIntegracao->integrar($projeto);
 
         $integracaoList = new IntegracaoLists();

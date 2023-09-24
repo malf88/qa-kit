@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoProjetos\Providers;
 
 use App\Modules\GestaoProjetos\Business\ExportProjectTrelloBusiness;
+use App\Modules\GestaoProjetos\Business\IntegracaoProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\ProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\SprintBusiness;
 use App\Modules\GestaoProjetos\Business\TarefaBusiness;
@@ -31,8 +32,10 @@ use App\Modules\GestaoProjetos\Repositorys\ProjetoRepository;
 use App\Modules\GestaoProjetos\Repositorys\SprintRepository;
 use App\Modules\GestaoProjetos\Repositorys\TarefaRepository;
 use App\Modules\GestaoProjetos\Repositorys\UploadTarefaRepository;
+use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
 use App\Modules\Projetos\Components\GraficoAplicacoesComMaisTestes;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
+use App\System\Contracts\Business\IntegracaoBusinessContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Impl\ServiceProviderAbstract;
 use Illuminate\Support\Facades\Blade;
@@ -67,6 +70,10 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
 
     public function boot(): void
     {
+        $this->app
+            ->when(IntegracaoBoard::class)
+            ->needs(IntegracaoBusinessContract::class)
+            ->give(IntegracaoProjetoBusiness::class);
         $this->moduleExists(ProjetosServiceProvider::class);
         MenuConfig::configureMenuModule();
         Blade::component('criar-tarefa', CriarTarefa::class);
