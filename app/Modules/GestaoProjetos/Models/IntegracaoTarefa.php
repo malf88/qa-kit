@@ -10,4 +10,9 @@ class IntegracaoTarefa extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'integracoes.integracoes_tarefas';
+    protected $fillable = [
+        'tarefa_id',
+        'id_externo',
+        'retorno'
+    ];
 }

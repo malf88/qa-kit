@@ -10,4 +10,9 @@ class IntegracaoUsuario extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'integracoes.integracoes_usuarios';
+    protected $fillable = [
+        'user_id',
+        'id_externo',
+        'retorno'
+    ];
 }

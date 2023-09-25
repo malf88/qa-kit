@@ -47,15 +47,14 @@ class ExportProjectTrelloBusiness extends BusinessAbstract implements ExportProj
         foreach (array_reverse(TarefaStatusEnum::cases()) as $listsName){
             $lists->add($integracaoList->integrar($listsName, $board));
         }
-//        $lists = $trelloListService->get(['id' => $board->id]);
-        $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
+       $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
 
 
         $projeto->tarefas->each(function(TarefaDTO $tarefa, $indice) use($board, $listAberta){
-            $integracaoUser = new IntegracaoUser();
+            $integracaoUser = app()->make(IntegracaoUser::class);
             $user = $integracaoUser->integrar($tarefa->responsavel, $board);
 
-            $integracaoCard = new IntegracaoCard();
+            $integracaoCard = app()->make(IntegracaoCard::class);
             $card = $integracaoCard->integrar($tarefa, $board, $listAberta);
         });
 

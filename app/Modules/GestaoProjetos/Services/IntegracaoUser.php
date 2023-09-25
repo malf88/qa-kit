@@ -8,10 +8,17 @@ use App\Modules\GestaoProjetos\DTOs\TrelloBoardDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloMemberDTO;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoardMembers;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
+use App\System\Contracts\Business\IntegracaoBusinessContract;
 use App\System\DTOs\UserDTO;
 
 class IntegracaoUser
 {
+    public function __construct(
+        private readonly IntegracaoBusinessContract $integracaoUserBusiness
+    )
+    {
+    }
+
     public function integrar(UserDTO $userDTO, TrelloBoardDTO $boardDTO):TrelloMemberDTO
     {
         $trelloUserService = new TrelloBoardMembers(
@@ -20,7 +27,12 @@ class IntegracaoUser
         );
 //            $user = $trelloUserService->get(['id' => $board->id]);
         $user = $trelloUserService->addByEmail($boardDTO->id, TrelloMemberDTO::from(['email' => $userDTO->email]));
-
+        $integracaoUser = IntegracaoUsuarioDTO::from([
+            'user_id' => $userDTO->id,
+            'id_externo'    => $user->id,
+            'retorno'   => json_encode($user)
+        ]);
+        $this->integracaoUserBusiness->registrarIntegracao($integracaoUser);
         return $user;
     }
 }

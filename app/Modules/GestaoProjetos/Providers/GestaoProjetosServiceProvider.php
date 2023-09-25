@@ -4,6 +4,8 @@ namespace App\Modules\GestaoProjetos\Providers;
 
 use App\Modules\GestaoProjetos\Business\ExportProjectTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoProjetoBusiness;
+use App\Modules\GestaoProjetos\Business\IntegracaoTarefaBusiness;
+use App\Modules\GestaoProjetos\Business\IntegracaoUsuarioBusiness;
 use App\Modules\GestaoProjetos\Business\ProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\SprintBusiness;
 use App\Modules\GestaoProjetos\Business\TarefaBusiness;
@@ -33,6 +35,8 @@ use App\Modules\GestaoProjetos\Repositorys\SprintRepository;
 use App\Modules\GestaoProjetos\Repositorys\TarefaRepository;
 use App\Modules\GestaoProjetos\Repositorys\UploadTarefaRepository;
 use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
+use App\Modules\GestaoProjetos\Services\IntegracaoCard;
+use App\Modules\GestaoProjetos\Services\IntegracaoUser;
 use App\Modules\Projetos\Components\GraficoAplicacoesComMaisTestes;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\System\Contracts\Business\IntegracaoBusinessContract;
@@ -74,6 +78,15 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
             ->when(IntegracaoBoard::class)
             ->needs(IntegracaoBusinessContract::class)
             ->give(IntegracaoProjetoBusiness::class);
+        $this->app
+            ->when(IntegracaoUser::class)
+            ->needs(IntegracaoBusinessContract::class)
+            ->give(IntegracaoUsuarioBusiness::class);
+
+        $this->app
+            ->when(IntegracaoCard::class)
+            ->needs(IntegracaoBusinessContract::class)
+            ->give(IntegracaoTarefaBusiness::class);
         $this->moduleExists(ProjetosServiceProvider::class);
         MenuConfig::configureMenuModule();
         Blade::component('criar-tarefa', CriarTarefa::class);
