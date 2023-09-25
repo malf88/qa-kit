@@ -41,7 +41,7 @@ class ProjetoRepository extends BaseRepository implements ProjetoRepositoryContr
             ->join('projetos.aplicacoes_equipes','aplicacoes.id','=','aplicacoes_equipes.aplicacao_id')
             ->where('equipe_id',$idEquipe)
             ->where('projetos.id', $idProjeto)
-            ->with(['aplicacao','tarefas', 'tarefas.responsavel'])
+            ->with(['aplicacao','tarefas', 'tarefas.responsavel', 'integracao'])
             ->first();
         return $projeto != null ? ProjetoDTO::from($projeto): null;
     }

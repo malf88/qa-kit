@@ -5,15 +5,13 @@ namespace App\Modules\GestaoProjetos\DTOs;
 use App\Modules\GestaoProjetos\Casts\CastSprint;
 use App\Modules\Projetos\Casts\CastProjeto;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
-use App\Modules\Projetos\DTOs\WithCast;
 use App\System\Casts\CastCarbonDate;
-use App\System\Casts\CastEquipes;
 use App\System\Casts\CastUser;
-use App\System\Casts\CastUsers;
 use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
 
 use Illuminate\Support\Carbon;
+use Spatie\LaravelData\Attributes\WithCast;
 
 class TarefaDTO extends DTO
 {
@@ -36,7 +34,8 @@ class TarefaDTO extends DTO
         #[WithCast(CastUser::class)]
         public ?UserDTO $responsavel,
         #[WithCast(CastSprint::class)]
-        public ?SprintDTO $sprint
+        public ?SprintDTO $sprint,
+        public ?IntegracaoTarefaDTO $integracao
 
     )
     {

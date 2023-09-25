@@ -31,7 +31,9 @@ class ProjetoDTO extends ProjetoBaseDTO
         public ?DataCollectable $sprints,
         #[WithCast(CastTarefas::class)]
         public ?DataCollectable $tarefas,
+        public ?IntegracaoProjetoDTO $integracao
     )
     {
+
     }
 }

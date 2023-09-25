@@ -35,7 +35,8 @@ class TarefaRepository implements TarefaRepositoryContract
                                         st.inicio,
                                         st.termino,
                                         st.status,
-                                        st.id_responsavel as responsavel
+                                        st.id_responsavel as responsavel,
+                                        trello_id
                                     FROM
                                         (SELECT
                                              s.id as sprint_id,
@@ -45,7 +46,8 @@ class TarefaRepository implements TarefaRepositoryContract
                                              s.inicio,
                                              s.termino,
                                              null as id_responsavel,
-                                             null as status
+                                             null as status,
+                                             null as trello_id
                                         FROM gestao_projetos.sprints s
                                         UNION
                                         SELECT
@@ -56,9 +58,11 @@ class TarefaRepository implements TarefaRepositoryContract
                                             t.inicio_estimado,
                                             t.termino_estimado,
                                             u.id,
-                                            t.status
+                                            t.status,
+                                            i.id_externo
                                         FROM gestao_projetos.tarefas t
-                                            LEFT JOIN users u on u.id = t.responsavel_id) as st
+                                            LEFT JOIN users u on u.id = t.responsavel_id
+                                            LEFT JOIN integracoes.integracoes_tarefas i ON i.tarefa_id = t.id) as st
                                             JOIN projetos.projetos p on p.id = st.projeto_id
                                             JOIN projetos.aplicacoes a ON p.aplicacao_id = a.id
                                             JOIN projetos.aplicacoes_equipes ae ON ae.aplicacao_id = a.id

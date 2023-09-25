@@ -2,18 +2,12 @@
 
 namespace App\Modules\GestaoProjetos\DTOs;
 
-use App\Modules\GestaoProjetos\Casts\CastSprint;
-use App\Modules\Projetos\Casts\CastProjeto;
-use App\Modules\Projetos\DTOs\ProjetoDTO;
-use App\Modules\Projetos\DTOs\WithCast;
 use App\System\Casts\CastCarbonDate;
-use App\System\Casts\CastEquipes;
-use App\System\Casts\CastUser;
-use App\System\Casts\CastUsers;
-use App\System\DTOs\UserDTO;
+
 use App\System\Utils\DTO;
 
 use Illuminate\Support\Carbon;
+use Spatie\LaravelData\Attributes\WithCast;
 
 class TarefaSprintDTO extends DTO
 {
@@ -27,7 +21,8 @@ class TarefaSprintDTO extends DTO
         public ?Carbon $inicio,
         #[WithCast(CastCarbonDate::class)]
         public ?Carbon $termino,
-        public ?int $responsavel
+        public ?int $responsavel,
+        public ?string $trello_id
 
     )
     {

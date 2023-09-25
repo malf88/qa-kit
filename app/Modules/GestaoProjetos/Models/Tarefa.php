@@ -58,4 +58,9 @@ class Tarefa extends Model
         return $this->hasMany(AuditoriaTarefa::class);
 
     }
+
+    public function integracao()
+    {
+        return $this->hasOne(IntegracaoTarefa::class);
+    }
 }
