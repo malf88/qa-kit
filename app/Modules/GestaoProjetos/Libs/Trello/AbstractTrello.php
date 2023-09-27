@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoProjetos\Libs\Trello;
 
+use App\Modules\GestaoProjetos\Config\TrelloConfig;
 use GuzzleHttp\Client;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Arr;
@@ -12,8 +13,7 @@ abstract class AbstractTrello
     private Client $client;
     protected string $path;
     public function __construct(
-        private readonly string $token,
-        private readonly string $key
+        private readonly TrelloConfig $config
     )
     {
         $this->client = new Client([
@@ -33,8 +33,8 @@ abstract class AbstractTrello
     private function getQuery(array $parameters):array
     {
         return [
-            'key' => $this->key,
-            'token' => $this->token,
+            'key' => $this->config->getKey(),
+            'token' => $this->config->getToken(),
             ...$parameters
         ];
     }

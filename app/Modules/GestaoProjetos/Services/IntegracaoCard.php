@@ -2,6 +2,7 @@
 
 namespace App\Modules\GestaoProjetos\Services;
 
+use App\Modules\GestaoProjetos\Config\TrelloConfig;
 use App\Modules\GestaoProjetos\DTOs\IntegracaoTarefaDTO;
 use App\Modules\GestaoProjetos\DTOs\IntegracaoUsuarioDTO;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
@@ -19,16 +20,13 @@ use App\System\DTOs\UserDTO;
 class IntegracaoCard
 {
     public function __construct(
+        private readonly TrelloCards $trelloCardService,
         private readonly IntegracaoBusinessContract $integracaoTarefaBusiness
     )
     {
     }
     public function integrar(TarefaDTO $tarefaDTO, TrelloBoardDTO $boardDTO, TrelloListDTO $listTituloAberta):TrelloCardDTO
     {
-        $trelloCardService = new TrelloCards(
-            'ATTAe8d2bec2b9b0a5874bb88ccda0d6d0c5d187feea9d6e15c6a7ef643276d48ba8D8DEF6DB',
-            '4af9dd9f228be32b068c307a01ee268f'
-        );
         $trelloCard = TrelloCardDTO::from([
             'idBoard' => $boardDTO->id,
             'desc'  => $tarefaDTO->descricao,
@@ -38,9 +36,13 @@ class IntegracaoCard
 
         ]);
 
+        if($tarefaDTO->integracao?->id_externo != null){
+            $trelloCard->id = $tarefaDTO->integracao->id_externo;
+            return $this->trelloCardService->update($trelloCard);
+        }
 
 
-       $card = $trelloCardService->create($trelloCard);
+       $card = $this->trelloCardService->create($trelloCard);
 
         $integracaoCard = IntegracaoTarefaDTO::from([
             'tarefa_id' => $tarefaDTO->id,

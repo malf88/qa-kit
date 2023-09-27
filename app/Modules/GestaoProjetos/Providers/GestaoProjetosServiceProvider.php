@@ -34,12 +34,14 @@ use App\Modules\GestaoProjetos\Repositorys\ProjetoRepository;
 use App\Modules\GestaoProjetos\Repositorys\SprintRepository;
 use App\Modules\GestaoProjetos\Repositorys\TarefaRepository;
 use App\Modules\GestaoProjetos\Repositorys\UploadTarefaRepository;
+use App\Modules\GestaoProjetos\Repositorys\UserRepository;
 use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
 use App\Modules\GestaoProjetos\Services\IntegracaoCard;
 use App\Modules\GestaoProjetos\Services\IntegracaoUser;
 use App\Modules\Projetos\Components\GraficoAplicacoesComMaisTestes;
 use App\Modules\Projetos\Providers\ProjetosServiceProvider;
 use App\System\Contracts\Business\IntegracaoBusinessContract;
+use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Impl\ServiceProviderAbstract;
 use Illuminate\Support\Facades\Blade;
@@ -87,6 +89,10 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
             ->when(IntegracaoCard::class)
             ->needs(IntegracaoBusinessContract::class)
             ->give(IntegracaoTarefaBusiness::class);
+        $this->app
+            ->when(IntegracaoUser::class)
+            ->needs(UserRepositoryContract::class)
+            ->give(UserRepository::class);
         $this->moduleExists(ProjetosServiceProvider::class);
         MenuConfig::configureMenuModule();
         Blade::component('criar-tarefa', CriarTarefa::class);

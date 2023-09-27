@@ -6,6 +6,6 @@ class User extends BaseModel
 {
     public function integracao()
     {
-        return $this->hasOne(IntegracaoTarefa::class);
+        return $this->hasOne(IntegracaoUsuario::class);
     }
 }

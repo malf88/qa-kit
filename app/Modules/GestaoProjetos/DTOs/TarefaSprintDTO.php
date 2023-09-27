@@ -6,7 +6,7 @@ use App\System\Casts\CastCarbonDate;
 
 use App\System\Utils\DTO;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
 
 class TarefaSprintDTO extends DTO

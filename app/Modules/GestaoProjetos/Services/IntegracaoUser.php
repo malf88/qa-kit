@@ -2,36 +2,39 @@
 
 namespace App\Modules\GestaoProjetos\Services;
 
+use App\Modules\GestaoProjetos\Config\TrelloConfig;
 use App\Modules\GestaoProjetos\DTOs\IntegracaoUsuarioDTO;
-use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloBoardDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloMemberDTO;
+use App\Modules\GestaoProjetos\DTOs\UserDTO;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoardMembers;
-use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
 use App\System\Contracts\Business\IntegracaoBusinessContract;
-use App\System\DTOs\UserDTO;
+use App\System\Contracts\Repository\UserRepositoryContract;
 
 class IntegracaoUser
 {
     public function __construct(
-        private readonly IntegracaoBusinessContract $integracaoUserBusiness
+        private readonly TrelloBoardMembers $trelloBoardMemberService,
+        private readonly IntegracaoBusinessContract $integracaoUserBusiness,
+        private readonly UserRepositoryContract $userRepository
     )
     {
     }
 
     public function integrar(UserDTO $userDTO, TrelloBoardDTO $boardDTO):TrelloMemberDTO
     {
-        $trelloUserService = new TrelloBoardMembers(
-            'ATTAe8d2bec2b9b0a5874bb88ccda0d6d0c5d187feea9d6e15c6a7ef643276d48ba8D8DEF6DB',
-            '4af9dd9f228be32b068c307a01ee268f'
-        );
-//            $user = $trelloUserService->get(['id' => $board->id]);
-        $user = $trelloUserService->addByEmail($boardDTO->id, TrelloMemberDTO::from(['email' => $userDTO->email]));
+
+        $userDTO = $this->userRepository->buscarPorId($userDTO->id);
+        if($userDTO->integracao?->id_externo != null){
+            return TrelloMemberDTO::from(json_decode($userDTO->integracao->retorno));
+        }
+        $user = $this->trelloBoardMemberService->addByEmail($boardDTO->id, TrelloMemberDTO::from(['email' => $userDTO->email]));
         $integracaoUser = IntegracaoUsuarioDTO::from([
             'user_id' => $userDTO->id,
             'id_externo'    => $user->id,
             'retorno'   => json_encode($user)
         ]);
+
         $this->integracaoUserBusiness->registrarIntegracao($integracaoUser);
         return $user;
     }

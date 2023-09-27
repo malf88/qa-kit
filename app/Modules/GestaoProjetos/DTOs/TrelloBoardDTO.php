@@ -10,7 +10,7 @@ class TrelloBoardDTO extends DTO
         public ?string $id,
         public string $name,
         public ?string $desc,
-        public ?string $descData,
+        public mixed $descData,
         public ?bool $closed,
         public ?string $idOrganization,
         public ?string $idEnterprise,

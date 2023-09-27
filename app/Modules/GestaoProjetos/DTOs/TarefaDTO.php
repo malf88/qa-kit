@@ -3,14 +3,13 @@
 namespace App\Modules\GestaoProjetos\DTOs;
 
 use App\Modules\GestaoProjetos\Casts\CastSprint;
+use App\Modules\GestaoProjetos\Casts\CastUser;
 use App\Modules\Projetos\Casts\CastProjeto;
 use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\System\Casts\CastCarbonDate;
-use App\System\Casts\CastUser;
-use App\System\DTOs\UserDTO;
 use App\System\Utils\DTO;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
 
 class TarefaDTO extends DTO
