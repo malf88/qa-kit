@@ -62,6 +62,8 @@ services:
             - USERID=${USERID:-1001}
         networks:
             - traefik-public
+        volumes:
+            - ./:/var/www/
     nginx:
         build:
             context: ./

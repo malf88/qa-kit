@@ -110,4 +110,16 @@ class TarefaRepository implements TarefaRepositoryContract
             ->count() > 0;
 
     }
+
+    public function buscarTarefaParaIntegracaoPorId(int $idTarefa): ?TarefaDTO
+    {
+        $tarefa = Tarefa::select('tarefas.*')
+            ->join('projetos.projetos', 'projetos.id', '=', 'tarefas.projeto_id')
+            ->join('projetos.aplicacoes', 'projetos.aplicacao_id', '=', 'aplicacoes.id')
+            ->join('projetos.aplicacoes_equipes', 'aplicacoes.id', '=', 'aplicacoes_equipes.aplicacao_id')
+            ->where('tarefas.id', $idTarefa)
+            ->with(['responsavel', 'responsavel.integracao', 'integracao'])
+            ->first();
+        return ($tarefa != null) ? TarefaDTO::from($tarefa) : $tarefa;
+    }
 }

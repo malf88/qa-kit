@@ -12,5 +12,6 @@ interface TarefaRepositoryContract
     public function updateTarefa(TarefaDTO $tarefaDTO, int $idEquipe): bool;
     public function buscarTarefaPorId(int $idTarefa, int $idEquipe):?TarefaDTO;
     public function existeTarefaPorTitulo(string $titulo, int $idProjeto, int $idEquipe): bool;
+    public function buscarTarefaParaIntegracaoPorId(int $idTarefa): ?TarefaDTO;
 
 }

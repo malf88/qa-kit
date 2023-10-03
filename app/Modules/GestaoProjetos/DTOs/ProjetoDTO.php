@@ -8,7 +8,6 @@ use App\Modules\Projetos\Casts\CastAplicacao;
 use App\Modules\Projetos\DTOs\AplicacaoDTO;
 use App\Modules\Projetos\DTOs\ProjetoDTO as ProjetoBaseDTO;
 use App\System\Casts\CastCarbonDate;
-use App\System\Utils\DTO;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Contracts\DataCollectable;
@@ -36,4 +35,5 @@ class ProjetoDTO extends ProjetoBaseDTO
     {
 
     }
+
 }

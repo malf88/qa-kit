@@ -65,4 +65,9 @@ class TarefaBusiness extends BusinessAbstract implements TarefaBusinessContract
     {
         return $this->tarefaRepository->buscarTarefaPorId($idTarefa, $idEquipe);
     }
+
+    public function buscarTarefaParaIntegracaoPorId(int $idTarefa): ?TarefaDTO
+    {
+        return $this->tarefaRepository->buscarTarefaParaIntegracaoPorId($idTarefa);
+    }
 }

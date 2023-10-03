@@ -17,7 +17,9 @@ class ExportProjectTrelloController extends Controller
     }
     public function exportar(int $idProjeto)
     {
-        return $this->exportProjectTrelloBusiness->exportar($idProjeto, EquipeUtils::equipeUsuarioLogado());
+        $this->exportProjectTrelloBusiness->enfileirarExportacao($idProjeto, EquipeUtils::equipeUsuarioLogado());
+        return redirect(route('gestao-projetos.projetos.tarefas.index', $idProjeto))
+            ->with([Controller::MESSAGE_KEY_SUCCESS => ['Integração do projeto foi enviado para a fila.']]);
     }
 
 }

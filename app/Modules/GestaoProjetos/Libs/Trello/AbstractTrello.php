@@ -24,7 +24,9 @@ abstract class AbstractTrello
     protected function request(string $method, array $parameter = [], array $parametroPath = []):mixed
     {
         $response = $this->client->request($method, $this->trataURL($parametroPath), [
-            'query' => $this->getQuery($parameter)
+            'query' => $this->getQuery($parameter),
+            'body'  => json_encode($parameter),
+            'form_params' => $parameter
         ]);
 
         return  json_decode($response->getBody()->getContents(), true);

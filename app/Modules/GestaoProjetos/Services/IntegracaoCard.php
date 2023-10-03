@@ -2,45 +2,40 @@
 
 namespace App\Modules\GestaoProjetos\Services;
 
-use App\Modules\GestaoProjetos\Config\TrelloConfig;
+use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\DTOs\IntegracaoTarefaDTO;
-use App\Modules\GestaoProjetos\DTOs\IntegracaoUsuarioDTO;
-use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloBoardDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloCardDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloListDTO;
-use App\Modules\GestaoProjetos\DTOs\TrelloMemberDTO;
-use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoardMembers;
-use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloCards;
 use App\System\Contracts\Business\IntegracaoBusinessContract;
-use App\System\DTOs\UserDTO;
+use Illuminate\Support\Facades\Log;
 
 class IntegracaoCard
 {
     public function __construct(
         private readonly TrelloCards $trelloCardService,
-        private readonly IntegracaoBusinessContract $integracaoTarefaBusiness
+        private readonly IntegracaoBusinessContract $integracaoTarefaBusiness,
+        private readonly TarefaBusinessContract $tarefaBusiness
     )
     {
     }
     public function integrar(TarefaDTO $tarefaDTO, TrelloBoardDTO $boardDTO, TrelloListDTO $listTituloAberta):TrelloCardDTO
     {
+        $tarefa = $this->tarefaBusiness->buscarTarefaParaIntegracaoPorId($tarefaDTO->id);
         $trelloCard = TrelloCardDTO::from([
             'idBoard' => $boardDTO->id,
-            'desc'  => $tarefaDTO->descricao,
-            'name'  => $tarefaDTO->titulo,
-            'start' => $tarefaDTO->inicio_estimado,
-            'idList' => $listTituloAberta->id
-
+            'desc'  => $tarefa->descricao,
+            'name'  => $tarefa->titulo,
+            'start' => $tarefa->inicio_estimado,
+            'idList' => $listTituloAberta->id,
+            'idMembers' => [$tarefa->responsavel->integracao->id_externo]
         ]);
-
-        if($tarefaDTO->integracao?->id_externo != null){
+        if($tarefa->integracao?->id_externo != null){
             $trelloCard->id = $tarefaDTO->integracao->id_externo;
             return $this->trelloCardService->update($trelloCard);
         }
-
 
        $card = $this->trelloCardService->create($trelloCard);
 

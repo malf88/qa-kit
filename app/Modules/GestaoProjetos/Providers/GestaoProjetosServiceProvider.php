@@ -44,7 +44,9 @@ use App\System\Contracts\Business\IntegracaoBusinessContract;
 use App\System\Contracts\Repository\UserRepositoryContract;
 use App\System\Exceptions\NotFoundException;
 use App\System\Impl\ServiceProviderAbstract;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\RateLimiter;
 
 class GestaoProjetosServiceProvider extends ServiceProviderAbstract
 {
@@ -97,6 +99,10 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         MenuConfig::configureMenuModule();
         Blade::component('criar-tarefa', CriarTarefa::class);
         Blade::component('alterar-tarefa', AlterarTarefa::class);
+
+        RateLimiter::for('trello', function (object $job) {
+            return Limit::perMinutes(10,5);
+        });
         //DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
 
         parent::boot();

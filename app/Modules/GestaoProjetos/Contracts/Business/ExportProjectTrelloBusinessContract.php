@@ -2,10 +2,9 @@
 
 namespace App\Modules\GestaoProjetos\Contracts\Business;
 
-use App\Modules\GestaoProjetos\DTOs\SprintDTO;
-use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
-use Spatie\LaravelData\DataCollection;
+use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 
 interface ExportProjectTrelloBusinessContract extends ExportProjectBusinessContract
 {
+    public function exportar(int $idProjeto, int $idEquipe): bool;
 }

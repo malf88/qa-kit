@@ -8,9 +8,11 @@ use App\Modules\GestaoProjetos\DTOs\IntegracaoProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\IntegracaoUsuarioDTO;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloBoardDTO;
+use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
 use App\System\Contracts\Business\IntegracaoBusinessContract;
 use App\System\DTOs\UserDTO;
+use Illuminate\Support\Collection;
 
 class IntegracaoBoard
 {
@@ -41,6 +43,11 @@ class IntegracaoBoard
             'retorno' => json_encode($board)
         ]);
         $this->integracaoProjetoBusiness->registrarIntegracao($integracaoBoardDTO);
+
+        $integracaoList = app()->make(IntegracaoLists::class);
+        foreach (array_reverse(TarefaStatusEnum::cases()) as $listsName){
+            $integracaoList->integrar($listsName, $board);
+        }
         return $board;
     }
 }
