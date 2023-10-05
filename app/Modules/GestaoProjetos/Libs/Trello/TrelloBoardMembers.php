@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoProjetos\Libs\Trello;
 
 
+use App\Modules\GestaoProjetos\Config\TrelloConfig;
 use App\Modules\GestaoProjetos\DTOs\TrelloCardDTO;
 use App\Modules\GestaoProjetos\DTOs\TrelloMemberDTO;
 use Illuminate\Support\Arr;
@@ -26,23 +27,11 @@ class TrelloBoardMembers extends AbstractTrello
 
     public function addByEmail(string $boardId, TrelloMemberDTO $trelloMemberDTO): TrelloMemberDTO
     {
-        $users = $this->get(['id' => $boardId]);
 
         $this->request('PUT', $trelloMemberDTO->toArray(),['{id}' => $boardId, '{idMember}' => '']);
-
-        $newUsers =$this->get(['id' => $boardId]);
-
-        $usersId = [];
-        $users->each(function (TrelloMemberDTO $item, $key) use(&$usersId) {
-            $usersId[] = $item->id;
-        });
-
-        $newsUsersId = [];
-        $newUsers->each(function (TrelloMemberDTO $item, $key) use(&$newsUsersId) {
-            $newsUsersId[] = $item->id;
-        });
-        $user = array_diff($newsUsersId, $usersId);
-        return $newUsers->where('id','=',$user[0])->first();
+        $memberService = new TrelloSearchMember(new TrelloConfig());
+        Log::info($memberService->get(['query' => $trelloMemberDTO->email])->first());
+        return $memberService->get(['query' => $trelloMemberDTO->email])->first();
     }
 
     public function delete(string $boardId, TrelloMemberDTO $trelloMemberDTO): TrelloMemberDTO
