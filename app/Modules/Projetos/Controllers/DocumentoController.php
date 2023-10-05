@@ -8,6 +8,7 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,7 @@ class DocumentoController
             $documentoDTO = DocumentoDTO::from($request->toArray());
             $documentoDTO->projeto_id = $idProjeto;
 
-            $this->documentoBusiness->salvar($documentoDTO);
+            $this->documentoBusiness->salvar($documentoDTO, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Documento inserido com sucesso!']]);
         }catch (UnprocessableEntityException $exception){
@@ -42,7 +43,7 @@ class DocumentoController
     {
         Auth::user()->can(PermissionEnum::REMOVER_CASO_TESTE->value);
         try{
-            $this->documentoBusiness->excluir($idProjeto, $idDocumento);
+            $this->documentoBusiness->excluir($idProjeto, $idDocumento, EquipeUtils::equipeUsuarioLogado());
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Documento removido com sucesso!']]);
         }catch (NotFoundException $exception){

@@ -24,19 +24,19 @@ class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessCon
     {
     }
 
-    public function buscarTodosPorProjeto(int $idProjeto): DataCollection
+    public function buscarTodosPorProjeto(int $idProjeto, int $idEquipe): DataCollection
     {
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
         if($projeto == null)
             throw new NotFoundException();
 
         return $this->documentoRepository->buscarTodosPorProjeto($idProjeto);
     }
 
-    public function salvar(DocumentoDTO $documentoDTO, DocumentosPostRequest $documentosPostRequest = new DocumentosPostRequest()): DocumentoDTO
+    public function salvar(DocumentoDTO $documentoDTO, int $idEquipe, DocumentosPostRequest $documentosPostRequest = new DocumentosPostRequest()): DocumentoDTO
     {
         $this->can(PermissionEnum::ADICIONAR_DOCUMENTO_PROJETO->value);
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($documentoDTO->projeto_id);
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($documentoDTO->projeto_id, $idEquipe);
         if($projeto == null)
             throw new NotFoundException();
 
@@ -49,10 +49,10 @@ class DocumentoBusiness extends BusinessAbstract implements DocumentoBusinessCon
 
     }
 
-    public function excluir(int $idProjeto, int $idDocumento): bool
+    public function excluir(int $idProjeto, int $idDocumento, int $idEquipe): bool
     {
         $this->can(PermissionEnum::REMOVER_DOCUMENTO_PROJETO->value);
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto);
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
         if($projeto == null)
             throw new NotFoundException();
 

@@ -9,5 +9,5 @@ use Spatie\LaravelData\DataCollection;
 interface ObservacaoBusinessContract
 {
     public function buscarPorProjeto(int $projetoId): DataCollection;
-    public function salvar(ObservacaoDTO $observacaoDTO, ObservacoesPostRequest $observacoesPostRequest = new ObservacoesPostRequest()): ObservacaoDTO;
+    public function salvar(ObservacaoDTO $observacaoDTO, int $idEquipe, ObservacoesPostRequest $observacoesPostRequest = new ObservacoesPostRequest()): ObservacaoDTO;
 }

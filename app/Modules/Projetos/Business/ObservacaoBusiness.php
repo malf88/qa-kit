@@ -30,11 +30,11 @@ class ObservacaoBusiness extends BusinessAbstract implements ObservacaoBusinessC
         return $this->observacaoRepository->buscarPorProjeto($projetoId);
     }
 
-    public function salvar(ObservacaoDTO $observacaoDTO, ObservacoesPostRequest $observacoesPostRequest = new ObservacoesPostRequest()): ObservacaoDTO
+    public function salvar(ObservacaoDTO $observacaoDTO, int $idEquipe, ObservacoesPostRequest $observacoesPostRequest = new ObservacoesPostRequest()): ObservacaoDTO
     {
         $this->can(PermissionEnum::ADICIONAR_COMENTARIO_PROJETO->value);
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($observacaoDTO->projeto_id);
-        if(!$this->projetoBusiness->projetoExists($projeto->aplicacao_id, $projeto->id)){
+        $projeto = $this->projetoBusiness->buscarPorIdProjeto($observacaoDTO->projeto_id, $idEquipe);
+        if(!$this->projetoBusiness->projetoExists($projeto->aplicacao_id, $projeto->id, $idEquipe)){
             throw new NotFoundException();
         }
 

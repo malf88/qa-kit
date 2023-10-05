@@ -90,7 +90,7 @@ class ProjetoController extends Controller
                 'searching' => false,
                 'columns' => [null, null, null, ['orderable' => false]],
             ];
-            $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto);
+            $documentos = $this->documentoBusiness->buscarTodosPorProjeto($idProjeto, EquipeUtils::equipeUsuarioLogado());
             $observacoes = $this->observacaoBusiness->buscarPorProjeto($idProjeto);
             $projeto = $this->projetoBusiness->buscarPorAplicacaoEProjeto($idAplicacao, $idProjeto, EquipeUtils::equipeUsuarioLogado());
             return view(

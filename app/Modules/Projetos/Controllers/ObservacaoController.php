@@ -8,6 +8,7 @@ use App\Modules\Projetos\Enums\PermissionEnum;
 use App\System\Exceptions\NotFoundException;
 use App\System\Exceptions\UnprocessableEntityException;
 use App\System\Http\Controllers\Controller;
+use App\System\Utils\EquipeUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +28,7 @@ class ObservacaoController extends Controller
             $observacaoDTO = ObservacaoDTO::from($request->all());
             $observacaoDTO->projeto_id = $idProjeto;
 
-            $this->observacaoBusiness->salvar($observacaoDTO);
+            $this->observacaoBusiness->salvar($observacaoDTO, EquipeUtils::equipeUsuarioLogado());
 
             return redirect(route('aplicacoes.projetos.editar',[$idAplicacao, $idProjeto]))
                 ->with([Controller::MESSAGE_KEY_SUCCESS => ['Observação inserida com sucesso!']]);
