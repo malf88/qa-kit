@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
 
-class TrelloBoardJobs implements ShouldQueue
+class TrelloMemberJobs implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
     public function middleware(): array
@@ -21,7 +21,7 @@ class TrelloBoardJobs implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        public int $idProjeto,
+        public int $idUser,
         public int $idEquipe
     )
     {

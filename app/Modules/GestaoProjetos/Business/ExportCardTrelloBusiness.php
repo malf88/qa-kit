@@ -3,7 +3,8 @@
 namespace App\Modules\GestaoProjetos\Business;
 
 use App\Modules\GestaoProjetos\Config\TrelloConfig;
-use App\Modules\GestaoProjetos\Contracts\Business\ExportProjectTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportBoardTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportCardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
@@ -20,7 +21,7 @@ use App\System\Impl\BusinessAbstract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
-class ExportProjectTrelloBusiness extends BusinessAbstract implements ExportProjectTrelloBusinessContract
+class ExportCardTrelloBusiness extends BusinessAbstract implements ExportCardTrelloBusinessContract
 {
     public function __construct(
         private readonly ProjetoBusinessContract $projetoBusiness

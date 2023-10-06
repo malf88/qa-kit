@@ -2,7 +2,7 @@
 
 namespace App\Modules\GestaoProjetos\Providers;
 
-use App\Modules\GestaoProjetos\Business\ExportProjectTrelloBusiness;
+use App\Modules\GestaoProjetos\Business\ExportBoardTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoTarefaBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoUsuarioBusiness;
@@ -13,7 +13,7 @@ use App\Modules\GestaoProjetos\Business\UploadTarefaBusiness;
 use App\Modules\GestaoProjetos\Components\AlterarTarefa;
 use App\Modules\GestaoProjetos\Components\CriarTarefa;
 use App\Modules\GestaoProjetos\Config\MenuConfig;
-use App\Modules\GestaoProjetos\Contracts\Business\ExportProjectTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportBoardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
@@ -63,7 +63,7 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         UploadTarefaBusinessContract::class => UploadTarefaBusiness::class,
         UploadTarefaRepositoryContract::class => UploadTarefaRepository::class,
         ExportProjectTrelloRepositoryContract::class => ExportProjectTrelloRepository::class,
-        ExportProjectTrelloBusinessContract::class => ExportProjectTrelloBusiness::class,
+        ExportBoardTrelloBusinessContract::class => ExportBoardTrelloBusiness::class,
         IntegracaoUsuarioRepositoryContract::class => IntegracaoUsuarioRepository::class,
         IntegracaoProjetoRepositoryContract::class => IntegracaoProjetoRepository::class,
         IntegracaoTarefaRepositoryContract::class => IntegracaoTarefaRepository::class
