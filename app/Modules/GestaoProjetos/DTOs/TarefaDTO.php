@@ -2,10 +2,9 @@
 
 namespace App\Modules\GestaoProjetos\DTOs;
 
+use App\Modules\GestaoProjetos\Casts\CastProjeto;
 use App\Modules\GestaoProjetos\Casts\CastSprint;
 use App\Modules\GestaoProjetos\Casts\CastUser;
-use App\Modules\Projetos\Casts\CastProjeto;
-use App\Modules\Projetos\DTOs\ProjetoDTO;
 use App\System\Casts\CastCarbonDate;
 use App\System\Utils\DTO;
 

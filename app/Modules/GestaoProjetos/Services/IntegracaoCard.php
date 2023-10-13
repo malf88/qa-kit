@@ -24,6 +24,7 @@ class IntegracaoCard
     public function integrar(TarefaDTO $tarefaDTO, TrelloBoardDTO $boardDTO, TrelloListDTO $listTituloAberta):TrelloCardDTO
     {
         $tarefa = $this->tarefaBusiness->buscarTarefaParaIntegracaoPorId($tarefaDTO->id);
+
         $trelloCard = TrelloCardDTO::from([
             'idBoard' => $boardDTO->id,
             'desc'  => $tarefa->descricao,
@@ -32,8 +33,8 @@ class IntegracaoCard
             'idList' => $listTituloAberta->id,
             'idMembers' => [$tarefa->responsavel->integracao->id_externo]
         ]);
-        if($tarefa->integracao?->id_externo != null){
-            $trelloCard->id = $tarefaDTO->integracao->id_externo;
+        if($tarefa->integracao != null && $tarefa->integracao->id_externo != null){
+            $trelloCard->id = $tarefa->integracao->id_externo;
             return $this->trelloCardService->update($trelloCard);
         }
 

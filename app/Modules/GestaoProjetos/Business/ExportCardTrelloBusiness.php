@@ -6,11 +6,14 @@ use App\Modules\GestaoProjetos\Config\TrelloConfig;
 use App\Modules\GestaoProjetos\Contracts\Business\ExportBoardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ExportCardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
-use App\Modules\GestaoProjetos\Jobs\TrelloBoardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportBoardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportCardJobs;
+use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloLists;
 use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
 use App\Modules\GestaoProjetos\Services\IntegracaoCard;
@@ -24,44 +27,41 @@ use Illuminate\Support\Facades\Log;
 class ExportCardTrelloBusiness extends BusinessAbstract implements ExportCardTrelloBusinessContract
 {
     public function __construct(
-        private readonly ProjetoBusinessContract $projetoBusiness
+        private readonly TarefaBusinessContract  $tarefaBusiness
     )
     {
 
     }
-    public function enfileirarExportacao(int $idProjeto, int $idEquipe): bool
+    public function enfileirarExportacao(int $idTarefa, int $idEquipe): bool
     {
         $this->can(PermissionEnum::EXPORTAR_PROJETO_TRELLO->value);
 
-        TrelloBoardJobs::dispatch($idProjeto, $idEquipe);
+        TrelloExportCardJobs::dispatch($idTarefa, $idEquipe);
         return true;
 
     }
-    public function exportar(int $idProjeto, int $idEquipe): bool
+    public function exportar(int $idTarefa, int $idEquipe): bool
     {
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
+        Log::info($idTarefa);
+        $tarefa = $this->tarefaBusiness->buscarTarefaPorId($idTarefa, $idEquipe);
+        Log::info($tarefa);
+        try{
+            $projeto = $tarefa->projeto;
+            $trelloList = new TrelloLists(new TrelloConfig());
+            $lists = $trelloList->get(['id' => $projeto->integracao->id_externo]);
+            $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
 
-        if($projeto == null){
-            throw new NotFoundException();
-        }
-
-        $serviceBoardIntegracao = app()->make(IntegracaoBoard::class);
-        $board = $serviceBoardIntegracao->integrar($projeto);
-
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
-
-        $trelloList = new TrelloLists(new TrelloConfig());
-        $lists = $trelloList->get(['id' => $projeto->integracao->id_externo]);
-        $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
-
-
-        $projeto->tarefas->each(function(TarefaDTO $tarefa, $indice) use($board, $listAberta){
-            $integracaoUser = app()->make(IntegracaoUser::class);
-            $user = $integracaoUser->integrar($tarefa->responsavel, $board);
+            $trelloBoardService = new TrelloBoards(new TrelloConfig());
+            $board = $trelloBoardService->get(['id' => $projeto->integracao->id_externo]);
 
             $integracaoCard = app()->make(IntegracaoCard::class);
             $card = $integracaoCard->integrar($tarefa, $board, $listAberta);
-        });
+
+        }catch (\Exception $e){
+            Log::info($e->getMessage());
+            throw $e;
+        }
+
 
         return true;
     }

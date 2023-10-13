@@ -95,6 +95,7 @@ class TarefaRepository implements TarefaRepositoryContract
             ->join('projetos.aplicacoes_equipes', 'aplicacoes.id', '=', 'aplicacoes_equipes.aplicacao_id')
             ->where('equipe_id', $idEquipe)
             ->where('tarefas.id', $idTarefa)
+            ->with(['projeto', 'projeto.integracao'])
             ->first();
         return ($tarefa != null) ? TarefaDTO::from($tarefa) : $tarefa;
     }

@@ -6,5 +6,5 @@ use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 
 interface ExportMemberTrelloBusinessContract extends ExportProjectBusinessContract
 {
-    public function exportar(int $idUsuario, int $idEquipe): bool;
+    public function exportar(int $idUsuario, int $idProjeto, int $idEquipe): bool;
 }

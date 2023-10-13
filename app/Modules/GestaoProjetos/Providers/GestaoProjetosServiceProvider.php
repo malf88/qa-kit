@@ -3,6 +3,8 @@
 namespace App\Modules\GestaoProjetos\Providers;
 
 use App\Modules\GestaoProjetos\Business\ExportBoardTrelloBusiness;
+use App\Modules\GestaoProjetos\Business\ExportCardTrelloBusiness;
+use App\Modules\GestaoProjetos\Business\ExportMemberTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoTarefaBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoUsuarioBusiness;
@@ -14,6 +16,8 @@ use App\Modules\GestaoProjetos\Components\AlterarTarefa;
 use App\Modules\GestaoProjetos\Components\CriarTarefa;
 use App\Modules\GestaoProjetos\Config\MenuConfig;
 use App\Modules\GestaoProjetos\Contracts\Business\ExportBoardTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportCardTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportMemberTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
@@ -66,7 +70,9 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         ExportBoardTrelloBusinessContract::class => ExportBoardTrelloBusiness::class,
         IntegracaoUsuarioRepositoryContract::class => IntegracaoUsuarioRepository::class,
         IntegracaoProjetoRepositoryContract::class => IntegracaoProjetoRepository::class,
-        IntegracaoTarefaRepositoryContract::class => IntegracaoTarefaRepository::class
+        IntegracaoTarefaRepositoryContract::class => IntegracaoTarefaRepository::class,
+        ExportMemberTrelloBusinessContract::class => ExportMemberTrelloBusiness::class,
+        ExportCardTrelloBusinessContract::class => ExportCardTrelloBusiness::class
     ];
     /**
      * Register services.
@@ -101,7 +107,7 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         Blade::component('alterar-tarefa', AlterarTarefa::class);
 
         RateLimiter::for('trello', function (object $job) {
-            return Limit::perMinutes(10,5);
+            return Limit::perMinutes(1,5);
         });
         //DashboardConfig::addDashboardWidget(new Widget('x-totais-testes'));
 

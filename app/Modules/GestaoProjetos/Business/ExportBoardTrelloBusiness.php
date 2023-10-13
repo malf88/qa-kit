@@ -9,7 +9,9 @@ use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
-use App\Modules\GestaoProjetos\Jobs\TrelloBoardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportBoardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportCardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportMemberJobs;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloLists;
 use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
 use App\Modules\GestaoProjetos\Services\IntegracaoCard;
@@ -32,7 +34,7 @@ class ExportBoardTrelloBusiness extends BusinessAbstract implements ExportBoardT
     {
         $this->can(PermissionEnum::EXPORTAR_PROJETO_TRELLO->value);
 
-        TrelloBoardJobs::dispatch($idProjeto, $idEquipe);
+        TrelloExportBoardJobs::dispatch($idProjeto, $idEquipe)->onQueue('board');
         return true;
 
     }
@@ -47,20 +49,16 @@ class ExportBoardTrelloBusiness extends BusinessAbstract implements ExportBoardT
         $serviceBoardIntegracao = app()->make(IntegracaoBoard::class);
         $board = $serviceBoardIntegracao->integrar($projeto);
 
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
-
-        $trelloList = new TrelloLists(new TrelloConfig());
-        $lists = $trelloList->get(['id' => $projeto->integracao->id_externo]);
-        $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
-
-
-        $projeto->tarefas->each(function(TarefaDTO $tarefa, $indice) use($board, $listAberta){
-            $integracaoUser = app()->make(IntegracaoUser::class);
-            $user = $integracaoUser->integrar($tarefa->responsavel, $board);
-
-            $integracaoCard = app()->make(IntegracaoCard::class);
-            $card = $integracaoCard->integrar($tarefa, $board, $listAberta);
+        $projeto->tarefas->each(function(TarefaDTO $tarefa, $item) use($idProjeto, $idEquipe){
+           TrelloExportMemberJobs::dispatch($tarefa->responsavel->id, $idProjeto, $idEquipe)
+                ->onQueue('member');
         });
+
+        $projeto->tarefas->each(function(TarefaDTO $tarefa, $item) use($idEquipe){
+            TrelloExportCardJobs::dispatch($tarefa->id, $idEquipe)
+                ->onQueue('card');
+        });
+
 
         return true;
     }

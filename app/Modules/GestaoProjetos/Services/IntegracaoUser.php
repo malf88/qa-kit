@@ -25,21 +25,23 @@ class IntegracaoUser
     {
 
         $userDTO = $this->userRepository->buscarPorId($userDTO->id);
-        if($userDTO->integracao?->id_externo != null){
-            return TrelloMemberDTO::from($userDTO->integracao->retorno);
-        }
+
 
         $user = $this->trelloBoardMemberService->addByEmail($boardDTO->id, TrelloMemberDTO::from([
                 'fullName' => $userDTO->name,
                 'email' => $userDTO->email
             ])
         );
-        $integracaoUser = IntegracaoUsuarioDTO::from([
-            'user_id' => $userDTO->id,
-            'id_externo'    => $user->id,
-            'retorno'   => json_encode($user)
-        ]);
-        $this->integracaoUserBusiness->registrarIntegracao($integracaoUser);
+
+        if($userDTO->integracao?->id_externo == null){
+            $integracaoUser = IntegracaoUsuarioDTO::from([
+                'user_id' => $userDTO->id,
+                'id_externo'    => $user->id,
+                'retorno'   => json_encode($user)
+            ]);
+            $this->integracaoUserBusiness->registrarIntegracao($integracaoUser);
+        }
+
         return $user;
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Modules\GestaoProjetos\Models;
 
 use App\Modules\Projetos\Models\Projeto as BaseModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Projeto extends BaseModel
 {

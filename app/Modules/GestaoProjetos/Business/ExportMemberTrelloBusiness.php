@@ -10,8 +10,11 @@ use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
 use App\Modules\GestaoProjetos\Enums\PermissionEnum;
 use App\Modules\GestaoProjetos\Enums\TarefaStatusEnum;
-use App\Modules\GestaoProjetos\Jobs\TrelloBoardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportBoardJobs;
+use App\Modules\GestaoProjetos\Jobs\TrelloExportMemberJobs;
+use App\Modules\GestaoProjetos\Libs\Trello\TrelloBoards;
 use App\Modules\GestaoProjetos\Libs\Trello\TrelloLists;
+use App\Modules\GestaoProjetos\Repositorys\UserRepository;
 use App\Modules\GestaoProjetos\Services\IntegracaoBoard;
 use App\Modules\GestaoProjetos\Services\IntegracaoCard;
 use App\Modules\GestaoProjetos\Services\IntegracaoLists;
@@ -24,45 +27,28 @@ use Illuminate\Support\Facades\Log;
 class ExportMemberTrelloBusiness extends BusinessAbstract implements ExportMemberTrelloBusinessContract
 {
     public function __construct(
-        private readonly ProjetoBusinessContract $projetoBusiness
+        private readonly ProjetoBusinessContract $projetoBusiness,
+        private readonly UserRepository $userRepository
     )
     {
 
     }
-    public function enfileirarExportacao(int $idProjeto, int $idEquipe): bool
+    public function enfileirarExportacao(int $idUsuario, int $idProjeto, int $idEquipe): bool
     {
         $this->can(PermissionEnum::EXPORTAR_PROJETO_TRELLO->value);
 
-        TrelloBoardJobs::dispatch($idProjeto, $idEquipe);
+        TrelloExportMemberJobs::dispatch($idUsuario, $idProjeto, $idEquipe);
         return true;
 
     }
-    public function exportar(int $idProjeto, int $idEquipe): bool
+    public function exportar(int $idUsuario, int $idProjeto, int $idEquipe): bool
     {
         $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
-
-        if($projeto == null){
-            throw new NotFoundException();
-        }
-
-        $serviceBoardIntegracao = app()->make(IntegracaoBoard::class);
-        $board = $serviceBoardIntegracao->integrar($projeto);
-
-        $projeto = $this->projetoBusiness->buscarPorIdProjeto($idProjeto, $idEquipe);
-
-        $trelloList = new TrelloLists(new TrelloConfig());
-        $lists = $trelloList->get(['id' => $projeto->integracao->id_externo]);
-        $listAberta = $lists->where('name','=',TarefaStatusEnum::ABERTA->value)->first();
-
-
-        $projeto->tarefas->each(function(TarefaDTO $tarefa, $indice) use($board, $listAberta){
-            $integracaoUser = app()->make(IntegracaoUser::class);
-            $user = $integracaoUser->integrar($tarefa->responsavel, $board);
-
-            $integracaoCard = app()->make(IntegracaoCard::class);
-            $card = $integracaoCard->integrar($tarefa, $board, $listAberta);
-        });
-
+        $boardService = new TrelloBoards(new TrelloConfig());
+        $board = $boardService->get(['id' => $projeto->integracao->id_externo]);
+        $usuario = $this->userRepository->buscarPorId($idUsuario);
+        $integracaoUser = app()->make(IntegracaoUser::class);
+        $user = $integracaoUser->integrar($usuario, $board);
         return true;
     }
 }

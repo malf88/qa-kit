@@ -3,6 +3,7 @@
 namespace App\Modules\GestaoProjetos\Jobs;
 
 use App\Modules\GestaoProjetos\Contracts\Business\ExportBoardTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ExportMemberTrelloBusinessContract;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
 
-class TrelloMemberJobs implements ShouldQueue
+class TrelloExportMemberJobs implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
     public function middleware(): array
@@ -22,6 +23,7 @@ class TrelloMemberJobs implements ShouldQueue
      */
     public function __construct(
         public int $idUser,
+        public int $idProjeto,
         public int $idEquipe
     )
     {
@@ -31,8 +33,8 @@ class TrelloMemberJobs implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ExportBoardTrelloBusinessContract $exportProjectTrelloBusiness): void
+    public function handle(ExportMemberTrelloBusinessContract $exportMemberTrelloBusiness): void
     {
-        $exportProjectTrelloBusiness->exportar( $this->idProjeto,  $this->idEquipe);
+        $exportMemberTrelloBusiness->exportar( $this->idUser,  $this->idProjeto, $this->idEquipe);
     }
 }

@@ -5,8 +5,6 @@ namespace App\Modules\GestaoProjetos\Components;
 use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
 use App\Modules\GestaoProjetos\DTOs\ProjetoDTO;
-use App\Modules\GestaoProjetos\DTOs\TarefaDTO;
-use App\Modules\GestaoProjetos\DTOs\TarefaSprintDTO;
 use App\System\Utils\EquipeUtils;
 use Closure;
 use Illuminate\Contracts\View\View;

@@ -3,7 +3,6 @@
 namespace App\Modules\GestaoProjetos\Models;
 
 
-use App\Modules\Projetos\Models\Projeto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
