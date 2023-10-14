@@ -80,6 +80,11 @@
                                     <a class="btn btn-warning btn-sm mt-2" href="{{route('gestao-projetos.projetos.export-trello',$projeto->id)}}"><i class="fab fa-trello"></i> Exportar para o Trello</a>
                                 @endcan
                             </div>
+                            <div class="row">
+                                @can(PermissionEnum::IMPORTAR_PROJETO_TRELLO->value)
+                                    <a class="btn btn-primary btn-sm mt-2" href="{{route('gestao-projetos.projetos.import-trello',$projeto->id)}}"><i class="fab fa-trello"></i> Importar do Trello</a>
+                                @endcan
+                            </div>
                         </div>
 
                     </div>
