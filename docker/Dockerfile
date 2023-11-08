@@ -15,6 +15,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     apt-get update && apt-get -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         nano \
+        wget \
         libcurl4-gnutls-dev \
         libxml2-dev \
         libpng-dev \
@@ -24,6 +25,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         openssl \
         zlib1g-dev \
         libpq-dev && \
+        wget  https://github.com/elastic/apm-agent-php/releases/download/v1.10.0/apm-agent-php_1.10.0_all.deb && \
+        dpkg -i apm-agent-php_1.10.0_all.deb && \
      docker-php-ext-install \
         bcmath \
         calendar \
@@ -36,6 +39,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     docker-php-ext-enable redis &&\sed -i "s/CipherString = .*$/#CipherString/" /etc/ssl/openssl.cnf && \
     chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R www-data:www-data /var/www
+
+
 
 RUN php artisan config:clear && \
      php artisan cache:clear && \

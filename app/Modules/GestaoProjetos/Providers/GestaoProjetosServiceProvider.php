@@ -5,6 +5,7 @@ namespace App\Modules\GestaoProjetos\Providers;
 use App\Modules\GestaoProjetos\Business\ExportBoardTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\ExportCardTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\ExportMemberTrelloBusiness;
+use App\Modules\GestaoProjetos\Business\ImportBoardTrelloBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoProjetoBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoTarefaBusiness;
 use App\Modules\GestaoProjetos\Business\IntegracaoUsuarioBusiness;
@@ -18,6 +19,7 @@ use App\Modules\GestaoProjetos\Config\MenuConfig;
 use App\Modules\GestaoProjetos\Contracts\Business\ExportBoardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ExportCardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ExportMemberTrelloBusinessContract;
+use App\Modules\GestaoProjetos\Contracts\Business\ImportBoardTrelloBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\ProjetoBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\SprintBusinessContract;
 use App\Modules\GestaoProjetos\Contracts\Business\TarefaBusinessContract;
@@ -72,7 +74,8 @@ class GestaoProjetosServiceProvider extends ServiceProviderAbstract
         IntegracaoProjetoRepositoryContract::class => IntegracaoProjetoRepository::class,
         IntegracaoTarefaRepositoryContract::class => IntegracaoTarefaRepository::class,
         ExportMemberTrelloBusinessContract::class => ExportMemberTrelloBusiness::class,
-        ExportCardTrelloBusinessContract::class => ExportCardTrelloBusiness::class
+        ExportCardTrelloBusinessContract::class => ExportCardTrelloBusiness::class,
+        ImportBoardTrelloBusinessContract::class => ImportBoardTrelloBusiness::class
     ];
     /**
      * Register services.
